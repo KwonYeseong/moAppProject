@@ -36,7 +36,9 @@ class Grey extends StatefulWidget {
 class _GreyState extends State<Grey> {
 
   final myController = TextEditingController();
-
+  int val = 0;
+  // double e=4.00;
+  String message;
 
 //dropdownbutton
   String _value = null;
@@ -399,7 +401,52 @@ class _GreyState extends State<Grey> {
           //  _showIntegerDialog();
         },
       ),
+
+
+
 */
+
+
+                      Divider(color: tagColor, height: 15.0,),
+
+                      //   Icon(Icons.monetization_on),
+
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                              padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
+                              width: MediaQuery.of(context).size.width/4.5,
+                              child:  Column(
+                                children: <Widget>[
+                                  Icon(Icons.attach_money),
+                                  Text('1박 가격')
+                                ],
+                              )
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width/1.8,
+                            child:     Slider(
+                                activeColor: tagColor,
+                                inactiveColor: color,
+                                value: val.toDouble(),
+                                max: 150000, min: 0.0, divisions: 150,
+                                onChanged: (double value) {
+                                  setState(() {
+                                    val = value.toInt();
+
+                                  });
+                                }),
+
+                          ),
+                          Text('₩$val',style :TextStyle(fontSize: 15.0),),
+                        ],
+                      ),
+
+
+
+
                       Divider(color: tagColor, height: 15.0,),
 
                       Column(
@@ -555,8 +602,9 @@ class _GreyState extends State<Grey> {
                           print('장소 :' + myController.text);
                           print('성인 : $_adult_peo');
                           print('아동 : $_child_peo');
-                          print('성인 : $_datevalue1');
-                          print('아동 : $_datevalue2');
+                          print('check in : $_datevalue1');
+                          print('check out : $_datevalue2');
+                          print('check out : $val');
 
                         },
 
@@ -581,4 +629,14 @@ class _GreyState extends State<Grey> {
         )
     );
   }
+
+  void changed(e) {
+    setState(() {
+      val = e;
+      message ="price \$:  " +"${e.toStringAsFixed(1)}   ";
+
+    });
+  }
+
+
 }
