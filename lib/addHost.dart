@@ -17,7 +17,7 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
   TextStyle titleStyle = new TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.black);
 
   //ImagePicker
-  File _livingroomImgae;
+  File _livingroomImage;
   var _livingroomTemp;
   File _bedroomImage_1;
   var _bedroomTemp_1;
@@ -187,44 +187,72 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
     });
   }
 
-  Future getImage(File saveImage, var tempImage) async {
-    tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+  Future getLvingroomImage() async {
+    _livingroomTemp = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      saveImage = tempImage;
+      _livingroomImage = _livingroomTemp;
+    });
+  }
+  Future getBedroom1Image() async {
+    _bedroomTemp_1 = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _bedroomImage_1 = _bedroomTemp_1;
+    });
+  }
+  Future getBedroom2Image() async {
+    _bedroomTemp_2 = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _bedroomImage_2 = _bedroomTemp_2;
+    });
+  }
+  Future getBathroomImage() async {
+    _bathroomTemp = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _bathroomImage= _bathroomTemp;
     });
   }
 
   _previewImage() {
-    TabController imagesController = TabController(length: 3, vsync: this);
     return Container(
-      //width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 4,
-      child: Center(
-        child: DefaultTabController(
-          length: 3,
-          child: Stack(
+      height: 250.0,
+      color: Colors.grey[200],
+      child: Row(
+        children: <Widget>[
+          Column(
             children: <Widget>[
-              TabBarView(
-                controller: imagesController,
-                children: <Widget>[
-                  Image.network('http://newsimg.hankookilbo.com/2017/12/06/201712060419390897_1.jpg'),
-                  Image.network('http://junggun.co.kr/wp-content/uploads/2017/03/cropped-maxresdefault.jpg'),
-                  Image.network('https://media1.s-nbcnews.com/j/newscms/2018_30/1355945/home-exterior-today-180726-tease_3f99937c609d875fece6a12af1594bd9.fit-560w.jpg')
-                ],
+              Container(
+                  width: MediaQuery.of(context).size.width/2,
+                  height: 125.0,
+                  child: _livingroomImage == null ? IconButton(icon: Icon(Icons.camera_alt), onPressed: getLvingroomImage, iconSize: 54.0) : Image.file(_livingroomImage, fit: BoxFit.fill),
               ),
               Container(
-                alignment: FractionalOffset(0.5, 0.95),
-                child: TabPageSelector(
-                  controller: imagesController,
-                  selectedColor: Colors.black,
-                  color: Colors.white,
-                ),
-              )
+                  width: MediaQuery.of(context).size.width/2,
+                  height: 125.0,
+                  child: _bedroomImage_1 == null ? IconButton(icon: Icon(Icons.camera_alt), onPressed: getBedroom1Image, iconSize: 54.0) : Image.file(_bedroomTemp_1, fit: BoxFit.fill),
+              ),
             ],
           ),
-        ),
+          Column(
+            children: <Widget>[
+              Container(
+                  width: MediaQuery.of(context).size.width/2,
+                  height: 125.0,
+                  child: _bedroomImage_2 == null ? IconButton(icon: Icon(Icons.camera_alt), onPressed: getBedroom2Image, iconSize: 54.0) : Image.file(_bedroomTemp_2, fit: BoxFit.fill),
+              ),
+              Container(
+                  width: MediaQuery.of(context).size.width/2,
+                  height: 125.0,
+                  child: _bathroomImage == null ? IconButton(icon: Icon(Icons.camera_alt), onPressed: getBathroomImage, iconSize: 54.0) : Image.file(_bathroomTemp, fit: BoxFit.fill),
+              ),
+            ],
+          )
+        ],
       ),
+
     );
   }
 
@@ -621,7 +649,7 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
           child: Column(
             children: <Widget>[
               Container( //빨간부분
-                  height: 140.0,
+                  height: 135.0,
                   width: MediaQuery.of(context).size.width,
                   //color: Colors.redAccent,
                   child: Row(
@@ -641,10 +669,10 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
                   )
               ),
               Container(
-                height: MediaQuery.of(context).size.height - 140.0,
+                height: MediaQuery.of(context).size.height - 135.0,
                 child: ListView(
                   children: <Widget>[
-                    //_previewImage(),
+                    _previewImage(),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
