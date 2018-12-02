@@ -6,7 +6,8 @@ import 'login.dart';
 import 'userInfo.dart';
 
 void main() async {
-  final FirebaseApp app = await FirebaseApp.configure(
+  final FirebaseApp app = FirebaseApp.instance;
+  /*configure(
     name: 'yeseongee',
     options: FirebaseOptions(
       googleAppID: Platform.isIOS
@@ -17,6 +18,7 @@ void main() async {
       projectID: 'flutterFinal',
     ),
   );
+  */
   storage = FirebaseStorage(
       app: app, storageBucket: 'gs://airbnb-c9e3e.appspot.com');
   runApp(new MyApp());

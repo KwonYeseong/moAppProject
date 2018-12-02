@@ -20,17 +20,6 @@ class HostingItem extends StatefulWidget {
 class HostingItemState extends State<HostingItem> {
   Widget _Image() {
     return Container(
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.4),
-          borderRadius: BorderRadius.circular(10.0),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              spreadRadius: 2.0,
-              blurRadius: 10.0,
-              color: Colors.black26,
-            ),
-          ],
-        ),
         width: 470.0,
         height: 200.0,
         child: Image.network(

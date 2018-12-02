@@ -8,23 +8,35 @@ bool selected = false;
 List<FavoriteItem> removeItem = [];
 List<FavoriteItem> favoriteItems = [
   new FavoriteItem(
+    id: 0,
     name: "고양이가 있는 해맞이 공원 원룸",
     location: "환호동",
     type: "단기",
     cost: "30000원 /박",
-    url:
-    "https://www.gannett-cdn.com/-mm-/9bdf8ad7ce526c41341414b8ec0"
-        "69705582a94b3/c=1-0-1040-781/local/-/media/2018/04/06/Louisville/Lo"
-        "uisville/636586068692591942-Airbnb-1.jpg?width=534&height=401&fit=crop",
+    photoURL1:
+    "https://static1.squarespace.com/static/53403192e4b008f8c6d7fa3b/5b09d7fd575d1fdde96905cb/5b09d898352f53c0a5043ad5/1527372349483/Screen+Shot+2018-05-24+at+8.35.34+AM.jpg?format=2500w",
+    photoURL2:
+    "https://static1.squarespace.com/static/53403192e4b008f8c6d7fa3b/5b09d7fd575d1fdde96905cb/5b09d7fe70a6addca9a91468/1527371785262/IMG_2452-HDR-154.jpg?format=2500w",
+    photoURL3:
+    "https://static1.squarespace.com/static/53403192e4b008f8c6d7fa3b/5b09d7fd575d1fdde96905cb/5b09d89803ce64b89506964d/1527372349499/Screen+Shot+2018-05-24+at+8.35.22+AM.jpg?format=2500w",
+    photoURL4:
+    "https://static1.squarespace.com/static/53403192e4b008f8c6d7fa3b/5b09d7fd575d1fdde96905cb/5b09d89aaa4a990332e16ff4/1527372349498/Screen+Shot+2018-05-19+at+8.29.49+PM.jpg?format=2500w",
   ),
   new FavoriteItem(
-      name: "편세권 포세권 역세권 원룸",
-      location: "서초구 반포동",
-      type: "장기",
-      cost: "600,000원 /월",
-      url:
-      "https://static1.squarespace.com/static/53403192e4b008f8c6d7fa3b/59156343d2b857304e98"
-          "44e7/59156343d2b857304e984508/1494355821536/6D3A4893-HDR.jpg?format=1500w")
+    id: 1,
+    name: "편세권 포세권 역세권 원룸",
+    location: "서초구 반포동",
+    type: "장기",
+    cost: "600,000원 /월",
+    photoURL1:
+    "https://www.rent.com/blog/wp-content/uploads/2015/05/How-Much-Would-You-Pay-For-Your-Dream-Apartment-Rental-672x378.jpg",
+    photoURL2:
+    "https://assets3.thrillist.com/v1/image/1647776/size/tmg-article_default_mobile.jpg",
+    photoURL3:
+    "http://www.inzagreb.com/galerija/1443711655_main_img0.jpg",
+    photoURL4:
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdz3NzUZ3cZFsFvgJ0XW-JKVmz3gDJTgEz-xtEfkjwQKkAEKmg",
+  )
 ];
 //List<bool> selected = new List<bool>(favoriteItems.length);
 
@@ -80,38 +92,37 @@ class FavoriteListState extends State<FavoriteList> {
                   padding:
                   const EdgeInsets.symmetric(horizontal: 4.0, vertical: 10.0),
                   child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                     children: <Widget>[
-                      IconButton(
-                          icon: Icon(Icons.arrow_back,
-                              size: 32.0, color: Colors.grey),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            editButtonFlag = false;
-                          }
-                      ),
-                      new Expanded(
-                        child: new Padding(
-                          padding: const EdgeInsets.only(left: 90.0),
-                          child: new Text(
-                            "저장 목록",
-                            style: new TextStyle(
-                                fontSize: 30.0,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold),
-                          ),
+                      Container(
+                        width: MediaQuery.of(context).size.width /1.5,
+                        padding: EdgeInsets.fromLTRB(150.0, 0.0, 0.0, 0.0),
+                        child:new Text(
+                          "저장 목록",
+                          style: new TextStyle(
+                              fontSize: 30.0,
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
-                      InkWell(
-                        onTap: () => editButtonPress(),
-                        child: Container(
-                            padding: EdgeInsets.all(10.0),
-                            child: new Text(editText(),
-                                style: new TextStyle(
-                                  fontSize: 20.0,
-                                  color: themecolor,
-                                  //fontWeight: FontWeight),)
-                                ))),
-                      )
+                      Container(
+                          width: MediaQuery.of(context).size.width /7,
+                          child:
+                          InkWell(
+                            onTap: () => editButtonPress(),
+                            child: Container(
+                                padding: EdgeInsets.all(10.0),
+                                child: new Text(editText(),
+                                    style: new TextStyle(
+                                      fontSize: 20.0,
+                                      color: themecolor,
+                                      //fontWeight: FontWeight),)
+                                    ))),
+                          )
+                      ),
+
+
                     ],
                   ),
                 ),
@@ -124,7 +135,10 @@ class FavoriteListState extends State<FavoriteList> {
                           location: item.location,
                           type: item.type,
                           cost: item.cost,
-                          url: item.url,
+                          photoURL1: item.photoURL1,
+                          photoURL2: item.photoURL2,
+                          photoURL3: item.photoURL3,
+                          photoURL4: item.photoURL4,
                           callback: () {
                             print('callback\n');
                             removeItem(item);

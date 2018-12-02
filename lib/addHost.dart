@@ -303,28 +303,28 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
           Column(
             children: <Widget>[
               Container(
-                  width: MediaQuery.of(context).size.width/2,
-                  height: 125.0,
-                  child: _livingroomImage == null ? IconButton(icon: Icon(Icons.camera_alt), onPressed: getLvingroomImage, iconSize: 54.0) : Image.file(_livingroomImage, fit: BoxFit.fill),
+                width: MediaQuery.of(context).size.width/2,
+                height: 125.0,
+                child: _livingroomImage == null ? IconButton(icon: Icon(Icons.camera_alt), onPressed: getLvingroomImage, iconSize: 54.0) : Image.file(_livingroomImage, fit: BoxFit.fill),
               ),
               Container(
-                  width: MediaQuery.of(context).size.width/2,
-                  height: 125.0,
-                  child: _bedroomImage_1 == null ? IconButton(icon: Icon(Icons.camera_alt), onPressed: getBedroom1Image, iconSize: 54.0) : Image.file(_bedroomTemp_1, fit: BoxFit.fill),
+                width: MediaQuery.of(context).size.width/2,
+                height: 125.0,
+                child: _bedroomImage_1 == null ? IconButton(icon: Icon(Icons.camera_alt), onPressed: getBedroom1Image, iconSize: 54.0) : Image.file(_bedroomTemp_1, fit: BoxFit.fill),
               ),
             ],
           ),
           Column(
             children: <Widget>[
               Container(
-                  width: MediaQuery.of(context).size.width/2,
-                  height: 125.0,
-                  child: _bedroomImage_2 == null ? IconButton(icon: Icon(Icons.camera_alt), onPressed: getBedroom2Image, iconSize: 54.0) : Image.file(_bedroomTemp_2, fit: BoxFit.fill),
+                width: MediaQuery.of(context).size.width/2,
+                height: 125.0,
+                child: _bedroomImage_2 == null ? IconButton(icon: Icon(Icons.camera_alt), onPressed: getBedroom2Image, iconSize: 54.0) : Image.file(_bedroomTemp_2, fit: BoxFit.fill),
               ),
               Container(
-                  width: MediaQuery.of(context).size.width/2,
-                  height: 125.0,
-                  child: _bathroomImage == null ? IconButton(icon: Icon(Icons.camera_alt), onPressed: getBathroomImage, iconSize: 54.0) : Image.file(_bathroomTemp, fit: BoxFit.fill),
+                width: MediaQuery.of(context).size.width/2,
+                height: 125.0,
+                child: _bathroomImage == null ? IconButton(icon: Icon(Icons.camera_alt), onPressed: getBathroomImage, iconSize: 54.0) : Image.file(_bathroomTemp, fit: BoxFit.fill),
               ),
             ],
           )
@@ -344,31 +344,58 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
       title: Text("방 정보", style: titleStyle),
       children: <Widget>[
         Container(
-          padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+          padding: EdgeInsets.fromLTRB(30.0, 0.0, 40.0, 0.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text("방 종류", style: directionStyle),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text("원룸", style: infoSize),
-                  Radio(value: 0, groupValue: _roomType, onChanged: _handleRoomType),
+                  Container(
 
-                  SizedBox(width: interval),
+                    width: MediaQuery.of(context).size.width/5,
+                    child: Row(
+                      children: <Widget>[
+                        Text("원룸", style: infoSize),
+                        Radio(value: 0, groupValue: _roomType, onChanged: _handleRoomType),
+                      ],
+                    ),
+                  ),
 
-                  Text("미투", style: infoSize),
-                  Radio(value: 1, groupValue: _roomType, onChanged: _handleRoomType),
+                  Container(
+                    width: MediaQuery.of(context).size.width/5,
+                    child: Row(
+                      children: <Widget>[
+                        Text("미투", style: infoSize),
+                        Radio(value: 1, groupValue: _roomType, onChanged: _handleRoomType),
+                      ],
+                    ),
+                  ),
 
-                  SizedBox(width: interval),
 
-                  Text("정투", style: infoSize),
-                  Radio(value: 2, groupValue: _roomType, onChanged: _handleRoomType),
+                  Container(
+                    width: MediaQuery.of(context).size.width/5,
+                    child: Row(
+                      children: <Widget>[
+                        Text("정투", style: infoSize),
+                        Radio(value: 2, groupValue: _roomType, onChanged: _handleRoomType),
+                      ],
+                    ),
+                  ),
 
-                  SizedBox(width: interval),
 
-                  Text("기타", style: infoSize),
-                  Radio(value: 3, groupValue: _roomType, onChanged: _handleRoomType),
+                  Container(
+                    width: MediaQuery.of(context).size.width/5,
+                    child: Row(
+                      children: <Widget>[
+                        Text("기타", style: infoSize),
+                        Radio(value: 3, groupValue: _roomType, onChanged: _handleRoomType),
+                      ],
+                    ),
+                  ),
+
                 ],
               ),
 
@@ -394,6 +421,9 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
     );
   }
 
+
+
+
   ExpansionTile _title(){
     double interval = 25.0;
     TextStyle directionStyle = new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold);
@@ -402,7 +432,7 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
       title: Text("제목", style: titleStyle),
       children: <Widget>[
         Container(
-          padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+          padding: EdgeInsets.fromLTRB(30.0, 0.0, 40.0, 0.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -454,6 +484,10 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
     );
   }
 
+
+
+
+
   ExpansionTile _location() {
     double interval = 25.0;
     TextStyle directionStyle = new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold);
@@ -462,7 +496,7 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
       title: Text("위치", style: titleStyle),
       children: <Widget>[
         Container(
-          padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+          padding: EdgeInsets.fromLTRB(30.0, 0.0, 40.0, 0.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -546,41 +580,66 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Text("단기", style: infoSize),
-                  Radio(value: 0, groupValue: _rentType, onChanged: _handleRentType),
+                  Container(
+                    width: MediaQuery.of(context).size.width /5,
+                    child: Row(
+                      children: <Widget>[
+                        Text("단기", style: infoSize),
+                        Radio(value: 0, groupValue: _rentType, onChanged: _handleRentType),
+                      ],
+                    ),
+                  ),
 
-                  SizedBox(width: interval),
+                  Container(
+                    width: MediaQuery.of(context).size.width /5,
+                    child: Row(
+                      children: <Widget>[
 
-                  Text("장기", style: infoSize),
-                  Radio(value: 1, groupValue: _rentType, onChanged: _handleRentType),
+                        Text("장기", style: infoSize),
+                        Radio(value: 1, groupValue: _rentType, onChanged: _handleRentType),
+                      ],
+                    ),
+                  ),
 
-                  SizedBox(width: interval),
-
-                  Text("양도", style: infoSize),
-                  Radio(value: 2, groupValue: _rentType, onChanged: _handleRentType),
+                  Container(
+                    width: MediaQuery.of(context).size.width /5,
+                    child: Row(
+                      children: <Widget>[
+                        Text("양도", style: infoSize),
+                        Radio(value: 2, groupValue: _rentType, onChanged: _handleRentType),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-              InkWell(
-                onTap: _startDatePicker,
-                child: Row(
-                  children: <Widget>[
-                    Text("대여 시작", style: directionStyle),
-                    SizedBox(width: 200.0),
-                    Text("$_startTime", style: TextStyle(fontSize: 16.0)),
-                  ],
+
+              Container(
+                padding: EdgeInsets.fromLTRB(15.0, 7.0,10.0, 7.0),
+                child:  InkWell(
+                  onTap: _startDatePicker,
+                  child: Row(
+                    children: <Widget>[
+                      Text("대여 시작", style: directionStyle),
+                      SizedBox(width: MediaQuery.of(context).size.width /2.5),
+                      Text("$_startTime", style: TextStyle(fontSize: 16.0)),
+                    ],
+                  ),
                 ),
               ),
-              SizedBox(height: interval),
-              InkWell(
-                onTap: _endDatePicker,
-                child: Row(
-                  children: <Widget>[
-                    Text("대여 종료", style: directionStyle),
-                    SizedBox(width: 200.0),
-                    Text("$_endTime", style: TextStyle(fontSize: 16.0)),
-                  ],
+
+              Container(
+                padding: EdgeInsets.fromLTRB(15.0, 7.0, 10.0, 7.0),
+                child:    InkWell(
+                  onTap: _endDatePicker,
+                  child: Row(
+                    children: <Widget>[
+                      Text("대여 종료", style: directionStyle),
+                      SizedBox(width: MediaQuery.of(context).size.width /2.5),
+                      Text("$_endTime", style: TextStyle(fontSize: 16.0)),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: interval)
@@ -599,7 +658,7 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
       title: Text("가격", style: titleStyle),
       children: <Widget>[
         Container(
-          padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+          padding: EdgeInsets.fromLTRB(30.0, 0.0, 40.0, 0.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -620,6 +679,7 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
     );
   }
 
+
   ExpansionTile _facility() {
     double interval = 60.0;
     TextStyle directionStyle = new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold);
@@ -629,7 +689,7 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
       title: Text("편의시설", style: titleStyle),
       children: <Widget>[
         Container(
-          padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+          padding: EdgeInsets.fromLTRB(30.0, 0.0, 40.0, 0.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -638,123 +698,163 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
 
               Divider(height: 5.0, color: Colors.black),
 
-              Container(
-                height: interval,
-                child: Row(
-                  children: <Widget>[
-                    Text("무선 인터넷", style: facilitiesStyle),
-                    Checkbox(
-                      value: wifi,
-                      onChanged: (bool value) {
-                        setState(() {
-                          wifi = value;
-                        });
-                      },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width/2.5,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width/5,
+                          child:   Text("무선 인터넷", style: facilitiesStyle),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width/11,
+                          child:   Checkbox(
+                            value: wifi,
+                            onChanged: (bool value) {
+                              setState(() {
+                                wifi = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width/2.5,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width/5,
+                          child:  Text("TV", style: facilitiesStyle),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width/11,
+                          child:     Checkbox(
+                            value: tv,
+                            onChanged: (bool value) {
+                              setState(() {
+                                tv = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width/2.5,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width/5,
+                          child:   Text("부엌", style: facilitiesStyle),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width/11,
+                          child:  Checkbox(
+                            value: kitchen,
+                            onChanged: (bool value) {
+                              setState(() {
+                                kitchen = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width/2.5,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width/5,
+                          child:  Text("전자레인지", style: facilitiesStyle),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width/11,
+                          child:     Checkbox(
+                            value: microWave,
+                            onChanged: (bool value) {
+                              setState(() {
+                                microWave = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
 
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width/2.5,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width/5,
+                          child:   Text("에어컨", style: facilitiesStyle),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width/11,
+                          child:  Checkbox(
+                            value: airConditioner,
+                            onChanged: (bool value) {
+                              setState(() {
+                                airConditioner = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width/2.5,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width/5,
+                          child:  Text("무료주차", style: facilitiesStyle),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width/11,
+                          child:        Checkbox(
+                            value: freeParking,
+                            onChanged: (bool value) {
+                              setState(() {
+                                freeParking = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
               Divider(height: 5.0, color: Colors.black),
-
-              Container(
-                height: interval,
-                child: Row(
-                  children: <Widget>[
-                    Text("TV", style: facilitiesStyle),
-                    Checkbox(
-                      value: tv,
-                      onChanged: (bool value) {
-                        setState(() {
-                          tv = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-
-              Divider(height: 5.0, color: Colors.black),
-
-              Container(
-                height: interval,
-                child: Row(
-                  children: <Widget>[
-                    Text("부엌", style: facilitiesStyle),
-                    Checkbox(
-                      value: kitchen,
-                      onChanged: (bool value) {
-                        setState(() {
-                          kitchen = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-
-              Divider(height: 5.0, color: Colors.black),
-
-              Container(
-                height: interval,
-                child: Row(
-                  children: <Widget>[
-                    Text("전자레인지", style: facilitiesStyle),
-                    Checkbox(
-                      value: microWave,
-                      onChanged: (bool value) {
-                        setState(() {
-                          microWave = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-
-              Divider(height: 5.0, color: Colors.black),
-
-              Container(
-                height: interval,
-                child: Row(
-                  children: <Widget>[
-                    Text("에어컨", style: facilitiesStyle),
-                    Checkbox(
-                      value: airConditioner,
-                      onChanged: (bool value) {
-                        setState(() {
-                          airConditioner = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-
-              Divider(height: 5.0, color: Colors.black),
-
-              Container(
-                height: interval,
-                child: Row(
-                  children: <Widget>[
-                    Text("무료 주차", style: facilitiesStyle),
-                    Checkbox(
-                      value: freeParking,
-                      onChanged: (bool value) {
-                        setState(() {
-                          freeParking = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
         )
       ],
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -799,7 +899,6 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
                         ),
                       ],
                     ),
-
                     _roomInfo(),
                     Divider(height: 2.0),
                     _title(),

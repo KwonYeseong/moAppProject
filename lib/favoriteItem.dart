@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'favorite.dart';
 import 'Detail.dart';
@@ -5,33 +6,60 @@ import 'Detail.dart';
 Color themecolor = Colors.redAccent;
 
 class FavoriteItem extends StatefulWidget {
+  final int id;
   final String name;
   final String location;
   final String type;
   final String cost;
-  final String url;
+  final String photoURL1;
+  final String photoURL2;
+  final String photoURL3;
+  final String photoURL4;
   final VoidCallback callback;
 
-  FavoriteItem({this.name, this.location, this.type, this.cost, this.url, this.callback});
+  FavoriteItem({this.id, this.name, this.location, this.type, this.cost,
+    this.photoURL1,this.photoURL2,this.photoURL3,this.photoURL4 ,this.callback});
 
   FavoriteItemState createState() => new FavoriteItemState();
 }
 
-class FavoriteItemState extends State<FavoriteItem> {
+class FavoriteItemState extends State<FavoriteItem>   with TickerProviderStateMixin{
   FavoriteListState favoriteList = new FavoriteListState();
 
   Widget _Image() {
+    TabController imagesController = TabController(length: 4, vsync: this);
     return Container(
-      //width: 470.0,
-        width: 470.0,
-        height: 200.0,
-        child: Image.network(
-          //"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXtSFkG4W7-fKfR2Ti2DtLz4jzDr6Prjwyl7y91lKJgXwa_bnTgQ",
-          widget.url,
-          fit: BoxFit.fill,
-        ));
-  }
+      width: MediaQuery.of(context).size.width,
+      height: 200.0,
+      child:Center(
+        child: DefaultTabController(
+          length: 4,
+          child: Stack(
+            children: <Widget>[
+              TabBarView(
+                controller: imagesController,
+                children: <Widget>[
+                  Image.network(widget.photoURL1, fit:BoxFit.fill),
+                  Image.network(widget.photoURL2, fit:BoxFit.fill),
+                  Image.network(widget.photoURL3, fit:BoxFit.fill),
+                  Image.network(widget.photoURL4, fit:BoxFit.fill),
+                ],
+              ),
+              Container(
+                alignment: FractionalOffset(0.5, 0.95),
+                child: TabPageSelector(
+                  controller: imagesController,
+                  selectedColor: Colors.grey,
+                  color: Colors.white,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
 
+  }
 
 
   @override
