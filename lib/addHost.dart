@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'userInfo.dart' as userInfo;
@@ -12,6 +15,8 @@ class addHosting extends StatefulWidget {
 }
 
 class addHostingState extends State<addHosting> with TickerProviderStateMixin {
+  int houseIndex = -1;
+
   //Format
   TextStyle titleStyle = new TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.black);
 
@@ -24,6 +29,11 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
   var _bedroomTemp_2;
   File _bathroomImage;
   var _bathroomTemp;
+
+  String photoUrl1;
+  String photoUrl2;
+  String photoUrl3;
+  String photoUrl4;
 
   //RoomInfo
   int _roomType = 0; // 0:원룸, 1:미투, 2:정투, 3:기타
@@ -46,7 +56,6 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
       else{ _peopleNum--; }
     });
   }
-
   //Title
   TextEditingController roomNameController;
   TextEditingController hashTagController;
@@ -217,7 +226,75 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
     });
   }
 
+  Future<void> getIndex() async{
+    CollectionReference ref = Firestore.instance.collection('INDEX');
+    QuerySnapshot events = await ref.getDocuments();
+    events.documents.forEach((document){
+      houseIndex = document['index'];
+    });
+  }
+
+  //add image to firestore
+  Future<void> addData2firestore() async{
+    int t = 0;
+
+    //add livingroom image
+    StorageReference ref = FirebaseStorage.instance.ref().child('$houseIndex-${t++}.jpg');
+    StorageUploadTask uploadTask = ref.putFile(_livingroomImage);
+    photoUrl1 = await (await uploadTask.onComplete).ref.getDownloadURL();
+
+    //add bedroom image
+    ref = FirebaseStorage.instance.ref().child('$houseIndex-${t++}.jpg');
+    uploadTask = ref.putFile(_bedroomImage_1);
+    photoUrl2 = await (await uploadTask.onComplete).ref.getDownloadURL();
+
+    //add bedroom image2
+    ref = FirebaseStorage.instance.ref().child('$houseIndex-${t++}.jpg');
+    uploadTask = ref.putFile(_bedroomImage_2);
+    photoUrl3 = await (await uploadTask.onComplete).ref.getDownloadURL();
+
+    //add bathroom image
+    ref = FirebaseStorage.instance.ref().child('$houseIndex-$t.jpg');
+    uploadTask = ref.putFile(_bathroomImage);
+    photoUrl4 = await (await uploadTask.onComplete).ref.getDownloadURL();
+
+    //add data to firebase
+    addData2Firebase({
+      'houseID':houseIndex,
+      'uid':userInfo.user.uid,
+      'roomtype':_roomType,
+      'peoplenum':_peopleNum,
+      'roomname':roomName,
+      'hashtag':hashTag,
+      'decription':description,
+      'province':province,
+      'street':street,
+      'detailaddress':detailAddress,
+      'renttype':_rentType,
+      'starttime':_startTime,
+      'endtime':_endTime,
+      'price':price,
+      'wifi':wifi,
+      'tv':tv,
+      'kitchen':kitchen,
+      'microwave':microWave,
+      'airconditioner':airConditioner,
+      'freeparking':freeParking,
+      'photourl1':photoUrl1,
+      'photourl2':photoUrl2,
+      'photourl3':photoUrl3,
+      'photourl4':photoUrl4,
+    });
+
+  }
+  //add data to firebase
+  Future<void> addData2Firebase(data){
+    Firestore.instance.document('HOUSE/$houseIndex').setData(data);
+    Firestore.instance.document('INDEX/Index').setData({'index':(houseIndex+1)});
+  }
+
   _previewImage() {
+    getIndex();
     return Container(
       height: 250.0,
       color: Colors.grey[200],
@@ -744,7 +821,7 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
         floatingActionButton: new FloatingActionButton(
           child: new Icon(Icons.done),
           onPressed: (){
-            //TODO: upload to firebase
+            addData2firestore();
             Navigator.pop(context);
           },
           backgroundColor: Colors.redAccent,

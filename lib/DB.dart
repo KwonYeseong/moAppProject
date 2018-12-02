@@ -1,7 +1,9 @@
-/*import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
 
 class HouseInfo{
   const HouseInfo({
+    @required this.houseID,
+
     @required this.uid,
 
     @required this.roomType,
@@ -33,27 +35,41 @@ class HouseInfo{
     @required this.photoUrl2,
     @required this.photoUrl3,
     @required this.photoUrl4
-  }) :  assert(uid !=null),
+  }) :  assert(houseID != null),
+
+        assert(uid != null),
+
         assert(roomType != null),
         assert(peopleNum != null),
+
         assert(roomName != null),
         assert(hashTag != null),
         assert(description != null),
+
         assert(province != null),
         assert(street != null),
+        assert(city != null),
         assert(detailAddress != null),
-        assert(city != null),
-        assert(city != null),
-        assert(city != null),
-        assert(city != null),
-        assert(city != null),
-        assert(city != null),
-        assert(city != null),
-        assert(city != null),
-        assert(city != null),
-        assert(city != null),
-        assert(city != null),
 
+        assert(rentType != null),
+        assert(startTime != null),
+        assert(endTime != null),
+
+        assert(price != null),
+
+        assert(wifi != null),
+        assert(tv != null),
+        assert(kitchen != null),
+        assert(microWave != null),
+        assert(airConditioner != null),
+        assert(freeParking != null),
+
+        assert(photoUrl1 != null),
+        assert(photoUrl2 != null),
+        assert(photoUrl3 != null),
+        assert(photoUrl4 != null);
+
+  final int houseID;
 
   //userInfo
   final String uid;
@@ -94,7 +110,4 @@ class HouseInfo{
   final String photoUrl2;
   final String photoUrl3;
   final String photoUrl4;
-
-
-
-}*/
+}
