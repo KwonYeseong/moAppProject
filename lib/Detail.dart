@@ -144,9 +144,9 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                             print('sss');
                             setState(() {
                               if (alreadySaved) {
-                                alreadySaved = true;
-                              } else {
                                 alreadySaved = false;
+                              } else {
+                                alreadySaved = true;
                               }
                             });
 

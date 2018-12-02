@@ -95,11 +95,13 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
   //Location
   TextEditingController provinceController;
   TextEditingController cityController;
+  TextEditingController dongController;
   TextEditingController streetController;
   TextEditingController detailAddressController;
 
   String province = "";
   String city = "";
+  String dong = "";
   String street = "";
   String detailAddress = "";
 
@@ -269,6 +271,7 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
       'decription':description,
       'province':province,
       'city':city,
+      'dong':dong,
       'street':street,
       'detailaddress':detailAddress,
       'renttype':_rentType,
@@ -525,6 +528,21 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
                 onChanged: (text) {
                   setState(() {
                     city = text;
+                  });
+                },
+              ),
+
+              SizedBox(height: interval),
+
+              Text("동/읍/리", style: directionStyle),
+              TextField(
+                controller: dongController,
+                decoration: InputDecoration(
+                    hintText: "ex)장성동"
+                ),
+                onChanged: (text) {
+                  setState(() {
+                    dong = text;
                   });
                 },
               ),

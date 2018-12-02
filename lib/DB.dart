@@ -15,6 +15,7 @@ class HouseInfo{
 
     @required this.province,
     @required this.city,
+    @required this.dong,
     @required this.street,
     @required this.detailAddress,
 
@@ -47,6 +48,7 @@ class HouseInfo{
         assert(description != null),
 
         assert(province != null),
+        assert(dong != null),
         assert(street != null),
         assert(city != null),
         assert(detailAddress != null),
@@ -86,6 +88,7 @@ class HouseInfo{
   //address
   final String province ; // 경상북도
   final String city; // 시/군/구
+  final String dong;
   final String street; //도로명주소
   final String detailAddress; //상세주소
 
