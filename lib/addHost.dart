@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 
 import 'userInfo.dart' as userInfo;
 
-
 class addHosting extends StatefulWidget {
   @override
   addHostingState createState() => addHostingState();
