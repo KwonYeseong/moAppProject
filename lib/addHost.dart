@@ -98,6 +98,8 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
   bool wifi = false;
   bool tv = false;
   bool kitchen = false;
+  bool microWave = false;
+  bool airConditioner = false;
   bool freeParking = false;
 
   @override
@@ -607,6 +609,44 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
                       onChanged: (bool value) {
                         setState(() {
                           kitchen = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+              Divider(height: 5.0, color: Colors.black),
+
+              Container(
+                height: interval,
+                child: Row(
+                  children: <Widget>[
+                    Text("전자레인지", style: facilitiesStyle),
+                    Checkbox(
+                      value: microWave,
+                      onChanged: (bool value) {
+                        setState(() {
+                          microWave = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+              Divider(height: 5.0, color: Colors.black),
+
+              Container(
+                height: interval,
+                child: Row(
+                  children: <Widget>[
+                    Text("에어컨", style: facilitiesStyle),
+                    Checkbox(
+                      value: airConditioner,
+                      onChanged: (bool value) {
+                        setState(() {
+                          airConditioner = value;
                         });
                       },
                     ),
