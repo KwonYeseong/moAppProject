@@ -160,8 +160,6 @@ class _GreyState extends State<Grey> {
         onTap: (){
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => DetailPage()));
-
-
         },
         child: Card(
           //  Card하나 전체

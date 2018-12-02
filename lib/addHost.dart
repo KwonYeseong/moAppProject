@@ -268,6 +268,7 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
       'hashtag':hashTag,
       'decription':description,
       'province':province,
+      'city':city,
       'street':street,
       'detailaddress':detailAddress,
       'renttype':_rentType,
