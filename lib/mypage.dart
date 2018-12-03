@@ -31,7 +31,7 @@ class MypageState extends State<Mypage> {
 
   List<ListItem> items = [
     new ListItem(title: "Logout", icon: Icons.input),
-    new ListItem(title: "저장 목록", icon: Icons.favorite_border),
+    //new ListItem(title: "저장 목록", icon: Icons.favorite_border),
     new ListItem(title: "호스팅 페이지", icon: Icons.home),
   ];
 
@@ -145,6 +145,7 @@ class MypageState extends State<Mypage> {
                         Divider(height:5.0)
                       ]));
                 }
+                /*
                 else if(index == 1){
                   return Padding(
                       padding: const EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
@@ -167,8 +168,8 @@ class MypageState extends State<Mypage> {
                         SizedBox(height: 10.0),
                         Divider(height:5.0)
                       ]));
-                }
-                else if(index == 2){
+                }*/
+                else if(index == 1){
                   return Padding(
                       padding: const EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
                       child: Column(children: <Widget>[

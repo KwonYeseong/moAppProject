@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
+
 import 'package:flutter_moapp_project/model/house.dart';
 import 'package:flutter_moapp_project/model/house_repository.dart';
 import 'search.dart';
 import 'Detail.dart';
 import 'package:numberpicker/numberpicker.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AccentColorOverride extends StatelessWidget {
   const AccentColorOverride({Key key, this.color, this.child})
@@ -23,22 +24,19 @@ class AccentColorOverride extends StatelessWidget {
   }
 }
 
-
 class Grey extends StatefulWidget {
   @override
   _GreyState createState() => new  _GreyState();
 }
 
-
-
-
-
 class _GreyState extends State<Grey> {
-
   final myController = TextEditingController();
   int val = 0;
+
   // double e=4.00;
   String message;
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
+
 
 //dropdownbutton
   String _value = null;
@@ -46,11 +44,6 @@ class _GreyState extends State<Grey> {
   String _datevalue2 = '';
   bool _enabled = false;
   List<String> _values = new List<String>();
-
-  final _scaffoldKey = new GlobalKey<ScaffoldState>();
-
-
-
 
 
   Future _selectDate() async {
@@ -72,7 +65,6 @@ class _GreyState extends State<Grey> {
     if(picked != null) setState(() => _datevalue2 = picked.toString());
   }
 
-
   @override
   void dispose() {
     // Clean up the controller when the Widget is disposed
@@ -80,43 +72,14 @@ class _GreyState extends State<Grey> {
     super.dispose();
   }
 
-
-
-
-
-  /*
-  VoidCallback _showPersBottomSheetCallBack;
-  int _currentIntValue = 10;
-  // double _currentDoubleValue = 3.0;
-  NumberPicker integerNumberPicker;
-  // NumberPicker decimalNumberPicker;
-  _handleValueChanged(num value) {
-    if (value != null) {
-      //`setState` will notify the framework that the internal state of this object has changed.
-      if (value is int) {
-        setState(() => _currentIntValue = value);
-      } else {
-        //  setState(() => _currentDoubleValue = value);
-      }
-    }
-  }
-  _handleValueChangedExternally(num value) {
-    if (value != null) {
-      if (value is int) {
-        setState(() => _currentIntValue = value);
-        integerNumberPicker.animateInt(value);
-      } else {
-        //    setState(() => _currentDoubleValue = value);
-        //    decimalNumberPicker.animateDecimalAndInteger(value);
-      }
-    }
-  }
-*/
   final color = Colors.grey;
   final tagColor = Colors.redAccent;
   String usr = "Yeseong";
   bool isExpanded = false;
+
 //사람수 number
+
+
   int _adult_peo = 0;
   int _child_peo = 0;
 
@@ -147,17 +110,15 @@ class _GreyState extends State<Grey> {
 
 
 
-
   List<GestureDetector> _buildCard(BuildContext context) {
     List<House> houses = HouseRepository.loadHouse();
 
-    if(houses == null || houses.isEmpty){
+    if (houses == null || houses.isEmpty) {
       return const <GestureDetector>[];
     }
-    return  houses.map((house) {
-
+    return houses.map((house) {
       return new GestureDetector(
-        onTap: (){
+        onTap: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => DetailPage()));
         },
@@ -176,21 +137,26 @@ class _GreyState extends State<Grey> {
                     fit: BoxFit.fitWidth,
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(16.0, 16.0, 12.0, 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(house.hashTag, style: TextStyle(fontSize:14.0, color: tagColor)),
-                        Text(house.title, style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold)),
-                        //Text(house.addr, style: TextStyle(fontSize: 13.5, fontStyle: FontStyle.italic)),
-                        Text(house.dates + " is available", style: TextStyle(fontSize: 13.5, color: color[500])),
-                        Text(house.price.toString() + "원/박", style: TextStyle(fontSize: 13.5,color: color[500])),
-                      ],
-                    ),
-                  ),
+                //        Expanded(
+                //         child: Padding(
+                //             padding: EdgeInsets.fromLTRB(16.0, 16.0, 12.0, 8.0),
+                //   child:
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(house.hashTag,
+                        style: TextStyle(fontSize: 14.0, color: tagColor)),
+                    Text(house.title, style: TextStyle(
+                        fontSize: 22.0, fontWeight: FontWeight.bold)),
+                    //Text(house.addr, style: TextStyle(fontSize: 13.5, fontStyle: FontStyle.italic)),
+                    Text(house.dates + " is available", style: TextStyle(
+                        fontSize: 13.5, color: color[500])),
+                    Text(house.price.toString() + "원/박", style: TextStyle(
+                        fontSize: 13.5, color: color[500])),
+                  ],
                 ),
+                //      ),
+                //       ),
               ],
             ),
           ),
@@ -199,9 +165,79 @@ class _GreyState extends State<Grey> {
     }).toList();
   }
 
-  @override
+  Widget _buildGrid(BuildContext context) {
+    return
+      StreamBuilder<QuerySnapshot>(
+        stream: Firestore.instance.collection('HOUSE').snapshots(),
 
-  //dropdownbutton
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return LinearProgressIndicator();
+
+          return _buildGridList(context, snapshot.data.documents);
+        },
+      );
+  }
+
+  Widget _buildGridList(BuildContext context, List<DocumentSnapshot> snapshot) {
+    return ListView(
+      children: snapshot.map((data) => _buildGridListItem(context, data)).toList(),
+      );
+  }
+
+  Widget _buildGridListItem(BuildContext context, DocumentSnapshot data) {
+    final record = Record1.fromSnapshot(data);
+    return new GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => DetailPage()));
+      },
+      child : Card(
+        //  Card하나 전체
+        child: Container(
+          //width: 200.0,
+          height: 150.0,
+
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: 160.0,
+                height: 160.0,
+                child: Image.network(
+                  record.photourl1,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              //    Expanded(
+              //       child: Padding(
+              //         padding: EdgeInsets.fromLTRB(16.0, 16.0, 12.0, 8.0),
+              //         child:
+
+              Container(
+                child:     Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(record.hashtag,
+                        style: TextStyle(fontSize: 14.0, color: tagColor)),
+                    Text(record.roomname, style: TextStyle(
+                        fontSize: 22.0, fontWeight: FontWeight.bold)),
+                    //Text(house.addr, style: TextStyle(fontSize: 13.5, fontStyle: FontStyle.italic)),
+                    Text(record.starttime + " is available", style: TextStyle(
+                        fontSize: 13.5, color: color[500])),
+                    Text(record.price.toString() + "원/박", style: TextStyle(
+                        fontSize: 13.5, color: color[500])),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+
+  @override
   void initState(){
     _values.addAll(["Long","Short","Roomate"]);
     _value = _values.elementAt(0);
@@ -214,41 +250,19 @@ class _GreyState extends State<Grey> {
     });
   }
 
-
   Widget build(BuildContext context) {
-
     return new SafeArea(
         child: new Scaffold(
           key: _scaffoldKey,
-          body: new ListView(
+          body:
+          // _buildGrid(context),
+
+          new ListView(
               padding: EdgeInsets.all(10.0),
               children: <Widget>[
-
                 Container(
-/*
-  decoration: BoxDecoration(
-    border: Border.all(
-
-            color: tagColor,
-            width: 1.0
-    )
-  ),
-
-  */
-                  /*
-  decoration: ShapeDecoration(
-    color: Colors.white,
-    shape: Border.all(
-      color: Colors.red,
-      width: 8.0,
-    ) + Border.all(
-      color: Colors.green,
-      width: 8.0,
-    )
-  ),
-  */
-                  child: ExpansionTile(
-
+                  child:
+                  ExpansionTile(
                     title: Row(
                       children: <Widget>[
                         DropdownButton(
@@ -281,29 +295,11 @@ class _GreyState extends State<Grey> {
 
                           padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
                           child: Text("집에 가서 자는 건 어떠세요?", style: TextStyle(color: color[600]),),
-
                         ),
-
-/*
-                      new OutlineButton(
-                        //  icon: Icon(Icons.search),
-                          child: Text("집에 가서 자는 건 어떠세요?", style: TextStyle(color: color[600]),),
-                          borderSide: BorderSide(color: color, width: 2.0),
-                          onPressed:(){}
-
-                      ),
-                      */
                       ],
-
                     ),
-
-                    //   backgroundColor: Colors.yellow,
-
                     trailing: Icon(Icons.search),
-
                     children: <Widget>[
-
-
                       Container(
                         //  width: MediaQuery.of(context).size.width ,
                         child: Row(
@@ -314,10 +310,6 @@ class _GreyState extends State<Grey> {
                               child:  Column(
                                 children: <Widget>[
                                   Icon(Icons.location_on),
-                                  //   Text('Check-In',
-                                  //   style: TextStyle(fontSize: 20.0),
-                                  // ),
-                                  //FlatButton.icon(onPressed: (){}, icon: Icon(Icons.date_range), label: Text('Check-In'))
                                 ],
                               ) ,
                             ),
@@ -338,78 +330,7 @@ class _GreyState extends State<Grey> {
                         ),
                       ),
 
-
-
-
-
-                      /*
-      Container(
-        padding: EdgeInsets.all(10.0),
-        child:   new Container(
-
-          //   padding: const EdgeInsets.fromLTRB(50.0,0.0,10,0),
-          alignment: Alignment.centerLeft,
-          height: 60.0,
-          decoration: new BoxDecoration(
-            //     color: Colors.blueGrey,
-              border: new Border.all(
-                  color: Colors.black,
-                  width: 1.0
-              ),
-              borderRadius: new BorderRadius.circular(20.0)
-          ),
-          child: Row(
-            children: <Widget>[
-              Icon(Icons.date_range),
-              //    Icon(Icons.child_care),
-              FlatButton(onPressed: (){}, child: Text(''))
-
-            ],
-          ),
-        ),
-      ),
-      */
-/*
-      InkWell(
-        child: Container(
-          padding: EdgeInsets.all(10.0),
-          child:   new Container(
-
-            //   padding: const EdgeInsets.fromLTRB(50.0,0.0,10,0),
-            alignment: Alignment.centerLeft,
-            height: 60.0,
-            decoration: new BoxDecoration(
-              //     color: Colors.blueGrey,
-                border: new Border.all(
-                    color: Colors.black,
-                    width: 1.0
-                ),
-                borderRadius: new BorderRadius.circular(20.0)
-            ),
-            child: Row(
-              children: <Widget>[
-                Icon(Icons.person),
-                Text('  성인  2 , 아동  0')
-              ],
-            ),
-
-          ),
-        ),
-        onTap: (){
-          //  _showIntegerDialog();
-        },
-      ),
-
-
-
-*/
-
-
                       Divider(color: tagColor, height: 15.0,),
-
-                      //   Icon(Icons.monetization_on),
-
-
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
@@ -441,9 +362,6 @@ class _GreyState extends State<Grey> {
                           Text('₩$val',style :TextStyle(fontSize: 15.0),),
                         ],
                       ),
-
-
-
 
                       Divider(color: tagColor, height: 15.0,),
 
@@ -515,9 +433,7 @@ class _GreyState extends State<Grey> {
                         ],
                       ),
 
-
                       Divider(color: tagColor, height: 15.0,),
-
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -612,18 +528,18 @@ class _GreyState extends State<Grey> {
 
                   ),
                 ),
-
-                new SizedBox(height: 20.0),
-                new Text(" $usr님, 어떤 방을 찾고 계신가요?",style: TextStyle(fontSize: 20.0, color: Colors.grey[700])),
                 new SizedBox(height: 10.0),
+                new Text(" $usr님, 어떤 방을 찾고 계신가요?",
+                    style: TextStyle(fontSize: 20.0, color: Colors.grey[700])),
+                new SizedBox(height: 10.0),
+
                 new Container(
-                    height: 700.0,
-                    child: new ListView(
-                      children: _buildCard(context),
-                    )
+                  height: 650.0,
+                  child:_buildGrid(context),
                 ),
               ]
           ),
+
         )
     );
   }
@@ -631,10 +547,75 @@ class _GreyState extends State<Grey> {
   void changed(e) {
     setState(() {
       val = e;
-      message ="price \$:  " +"${e.toStringAsFixed(1)}   ";
-
+      message = "price \$:  " + "${e.toStringAsFixed(1)}   ";
     });
   }
 
+}
 
+class Record1 {
+  final bool airconditioner;
+  final String city;
+  final String decription;
+  final String detailaddress;
+  final String dong;
+  final String endtime;
+  final bool freeparking;
+  final String hashtag;
+  final int houseID;
+  final bool kitchen;
+  final bool microwave;
+  final int peoplenum;
+  final String photourl1;
+  final String photourl2;
+  final String photourl3;
+  final String photourl4;
+  final int price;
+  final String province;
+  final int renttype;
+  final String roomname;
+  final int roomtype;
+  final String starttime;
+  final String street;
+  final bool tv;
+  final String uid;
+  final bool wifi;
+  final DocumentReference reference;
+
+  Record1.fromMap(Map<String, dynamic> map, {this.reference})
+      :
+        airconditioner = map['airconditioner'],
+        city= map['city'],
+        decription= map['decription'],
+        detailaddress= map['detailaddress'],
+        dong= map['dong'],
+        endtime= map['endtime'],
+        freeparking= map['freeparking='],
+        hashtag= map['hashtag'],
+        houseID= map['houseID'],
+        kitchen= map['kitchen'],
+        microwave= map[' microwave'],
+        peoplenum= map['peoplenum'],
+        photourl1= map['photourl1'],
+        photourl2= map['photourl2'],
+        photourl3= map['photourl3'],
+        photourl4= map['photourl4'],
+        price= map['price'],
+        province= map['privince'],
+        renttype= map['renttype'],
+        roomname= map['roomname'],
+        roomtype= map['roomtype'],
+        starttime= map['starttime'],
+        street= map['street='],
+        tv= map['tv'],
+        uid= map['uid'],
+        wifi= map['wifi'];
+
+
+
+  Record1.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
+
+  @override
+  String toString() => "Record<$airconditioner:$city:$decription:$detailaddress:$dong:$endtime:$freeparking:$hashtag:$houseID:$kitchen:$microwave:$peoplenum:$photourl1:$photourl2:$photourl3:$photourl4:$price:$province:$renttype:$roomname:$roomtype:$starttime:$street:$tv:$uid:$wifi>";
 }
