@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'data.dart';
+import 'package:flutter_moapp_project/Detail.dart';
 import 'page_transformer.dart';
 import 'package:flutter_moapp_project/home.dart';
+import 'package:flutter_moapp_project/userInfo.dart' as userInfo;
 
 class IntroPageItem extends StatelessWidget {
   IntroPageItem({
@@ -55,24 +57,27 @@ class IntroPageItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 16.0),
         child:
-          new OutlineButton(
-              child: new Text(
-                item.category,
-                style: textTheme.caption.copyWith(
-                  color: Colors.white70,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 3.0,
-                  fontSize: 18.0,
-                ),
-                textAlign: TextAlign.center,
+        new OutlineButton(
+            child: new Text(
+              item.category,
+              style: textTheme.caption.copyWith(
+                color: Colors.white70,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 3.0,
+                fontSize: 18.0,
               ),
-              onPressed: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => new HomePage()));
-              },
+              textAlign: TextAlign.center,
+            ),
+            onPressed: (){
+              //  print(item.category);
+               userInfo.renttype = item.renttype;
+
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => new HomePage()));
+            },
             shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
-          ),
+        ),
         /*
         Text(
           item.title,

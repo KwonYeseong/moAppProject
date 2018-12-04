@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 FirebaseUser user;
 
+int renttype;
+
 FirebaseStorage storage;
 
 File image;
