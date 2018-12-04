@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_moapp_project/userInfo.dart' as userInfo;
 
 import 'package:flutter_moapp_project/model/house.dart';
 import 'package:flutter_moapp_project/model/house_repository.dart';
@@ -24,14 +25,25 @@ class AccentColorOverride extends StatelessWidget {
   }
 }
 
+
 class Grey extends StatefulWidget {
   @override
   _GreyState createState() => new  _GreyState();
 }
 
+
+
+
+
 class _GreyState extends State<Grey> {
+  String home_location = '';
+  int home_price = 0;
+
+
+
   final myController = TextEditingController();
-  int val = 0;
+
+  int slider_price = 0;
 
   // double e=4.00;
   String message;
@@ -65,12 +77,17 @@ class _GreyState extends State<Grey> {
     if(picked != null) setState(() => _datevalue2 = picked.toString());
   }
 
+
+
   @override
   void dispose() {
     // Clean up the controller when the Widget is disposed
     myController.dispose();
     super.dispose();
+
+
   }
+
 
   final color = Colors.grey;
   final tagColor = Colors.redAccent;
@@ -109,88 +126,78 @@ class _GreyState extends State<Grey> {
   }
 
 
-  /*
-  List<GestureDetector> _buildCard(BuildContext context) {
-    List<House> houses = HouseRepository.loadHouse();
-
-    if (houses == null || houses.isEmpty) {
-      return const <GestureDetector>[];
-    }
-    return houses.map((house) {
-      return new GestureDetector(
-        onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => DetailPage()));
-        },
-        child: Card(
-          //  Card하나 전체
-          child: Container(
-            //width: 200.0,
-            height: 150.0,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  width: 160.0,
-                  child: Image.network(
-                    house.image,
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
-                //        Expanded(
-                //         child: Padding(
-                //             padding: EdgeInsets.fromLTRB(16.0, 16.0, 12.0, 8.0),
-                //   child:
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(house.hashTag,
-                        style: TextStyle(fontSize: 14.0, color: tagColor)),
-                    Text(house.title, style: TextStyle(
-                        fontSize: 22.0, fontWeight: FontWeight.bold)),
-                    //Text(house.addr, style: TextStyle(fontSize: 13.5, fontStyle: FontStyle.italic)),
-                    Text(house.dates + " is available", style: TextStyle(
-                        fontSize: 13.5, color: color[500])),
-                    Text(house.price.toString() + "원/박", style: TextStyle(
-                        fontSize: 13.5, color: color[500])),
-                  ],
-                ),
-                //      ),
-                //       ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }).toList();
-  }
-  */
-
   Widget _buildGrid(BuildContext context) {
-    return
-      StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance.collection('HOUSE').snapshots(),
 
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) return LinearProgressIndicator();
 
-          return _buildGridList(context, snapshot.data.documents);
-        },
-      );
+    if(home_price == 0 && home_location.length == 0 ){
+      return
+        StreamBuilder<QuerySnapshot>(
+          stream:Firestore.instance.collection('HOUSE').where('renttype', isEqualTo: userInfo.renttype).snapshots(),
+          builder: (context, snapshot){
+            if(!snapshot.hasData) return LinearProgressIndicator();
+            return _buildGridList(context, snapshot.data.documents);
+          },
+        );
+    } else if(home_price != 0 && home_location.length == 0){
+      return
+        StreamBuilder<QuerySnapshot>(
+          stream:Firestore.instance.collection('HOUSE')
+              .where('price', isLessThanOrEqualTo: home_price)
+              .where('renttype', isEqualTo: userInfo.renttype).snapshots(),
+          builder: (context, snapshot){
+            if(!snapshot.hasData) return LinearProgressIndicator();
+            return _buildGridList(context, snapshot.data.documents);
+          },
+        );
+    }else if(home_price == 0 && home_location.length != 0){
+      return
+        StreamBuilder<QuerySnapshot>(
+          stream:Firestore.instance.collection('HOUSE')
+              .where('dong', isEqualTo: home_location)
+              .where('renttype', isEqualTo: userInfo.renttype).snapshots(),
+          builder: (context, snapshot){
+            if(!snapshot.hasData) return LinearProgressIndicator();
+            return _buildGridList(context, snapshot.data.documents);
+          },
+        );
+    }
+    else if(home_price != 0 && home_location.length != 0){
+      return
+        StreamBuilder<QuerySnapshot>(
+          stream:Firestore.instance.collection('HOUSE')
+              .where('dong', isEqualTo: home_location)
+              .where('price', isLessThanOrEqualTo: home_price)
+              .where('renttype', isEqualTo: userInfo.renttype).snapshots(),
+          builder: (context, snapshot){
+            if(!snapshot.hasData) return LinearProgressIndicator();
+            return _buildGridList(context, snapshot.data.documents);
+          },
+        );
+    }
+
+
+
   }
 
   Widget _buildGridList(BuildContext context, List<DocumentSnapshot> snapshot) {
-    return ListView(
-      children: snapshot.map((data) => _buildGridListItem(context, data)).toList(),
+    return
+      //  Expanded(
+      //     child:
+      ListView(
+
+        children: snapshot.map((data) => _buildGridListItem(context, data))
+            .toList(),
+
+        // ),
       );
   }
 
   Widget _buildGridListItem(BuildContext context, DocumentSnapshot data) {
     final record = Record1.fromSnapshot(data);
-    return new GestureDetector(
+    return  new GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => DetailPage(record: record)));
+            context, MaterialPageRoute(builder: (context) => DetailPage(record: record,)));
       },
       child : Card(
         //  Card하나 전체
@@ -202,8 +209,8 @@ class _GreyState extends State<Grey> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                width: 160.0,
                 height: 160.0,
+                width: 160.0,
                 child: Image.network(
                   record.photourl1,
                   fit: BoxFit.fill,
@@ -215,7 +222,7 @@ class _GreyState extends State<Grey> {
               //         child:
 
               Container(
-                child:     Padding(
+                child:     Container(
                   padding: EdgeInsets.fromLTRB(16.0, 16.0, 12.0, 8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,24 +239,45 @@ class _GreyState extends State<Grey> {
                     ],
                   ),
                 ),
+
+
               )
+
+
+
+              //   ),
+              //    ),
             ],
           ),
+
+
         ),
       ),
     );
+
   }
 
 
   @override
+
+  //dropdownbutton
   void initState(){
-    _values.addAll(["Long","Short","Roomate"]);
-    _value = _values.elementAt(0);
+    _values.addAll(["Short","Long","Transfer"]);
+    _value = _values.elementAt(userInfo.renttype);
   }
 
   void _onChaged(String value){
     setState(() {
       _value = value;
+      print(value);
+      if(value == "Short"){
+        userInfo.renttype = 0;
+      }else if(value == "Long"){
+        userInfo.renttype = 1;
+      }else if(value == "Transfer"){
+        userInfo.renttype = 2;
+      }
+      //userInfo.renttype = ;
 
     });
   }
@@ -260,8 +288,8 @@ class _GreyState extends State<Grey> {
           key: _scaffoldKey,
           body:
           // _buildGrid(context),
-
           new ListView(
+
               padding: EdgeInsets.all(10.0),
               children: <Widget>[
                 Container(
@@ -299,11 +327,21 @@ class _GreyState extends State<Grey> {
 
                           padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
                           child: Text("집에 가서 자는 건 어떠세요?", style: TextStyle(color: color[600]),),
+
                         ),
+
+
                       ],
+
                     ),
+
+                    //   backgroundColor: Colors.yellow,
+
                     trailing: Icon(Icons.search),
+
                     children: <Widget>[
+
+
                       Container(
                         //  width: MediaQuery.of(context).size.width ,
                         child: Row(
@@ -318,23 +356,33 @@ class _GreyState extends State<Grey> {
                               ) ,
                             ),
                             Container(
-                                padding: EdgeInsets.fromLTRB(10.0, 20, 10.0, 15.0),
-                                width:MediaQuery.of(context).size.width/1.4,
-                                child: TextFormField(
-                                  controller: myController,
-                                  decoration: new InputDecoration.collapsed(
+                              padding: EdgeInsets.fromLTRB(10.0, 20, 10.0, 15.0),
+                              width:MediaQuery.of(context).size.width/1.4,
+                              child: TextField(
+                                controller: myController,
+                                decoration: new InputDecoration.collapsed(
 
-                                      hintText: '지역을 찾아보세요'
-                                  ),
+                                    hintText: '지역을 찾아보세요'
 
-
-                                )
+                                ),
+                                onChanged: (String text) {
+                                  setState(() {
+                                    print(text);
+                                    home_location = text;
+                                  });
+                                },
+                              ),
                             ),
                           ],
                         ),
                       ),
 
+
                       Divider(color: tagColor, height: 15.0,),
+
+                      //   Icon(Icons.monetization_on),
+
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
@@ -353,19 +401,23 @@ class _GreyState extends State<Grey> {
                             child:     Slider(
                                 activeColor: tagColor,
                                 inactiveColor: color,
-                                value: val.toDouble(),
+                                value: slider_price.toDouble(),
                                 max: 150000, min: 0.0, divisions: 150,
                                 onChanged: (double value) {
                                   setState(() {
-                                    val = value.toInt();
+                                    slider_price = value.toInt();
+                                    home_price = slider_price;
 
                                   });
                                 }),
 
                           ),
-                          Text('₩$val',style :TextStyle(fontSize: 15.0),),
+                          Text('₩$slider_price',style :TextStyle(fontSize: 15.0),),
                         ],
                       ),
+
+
+
 
                       Divider(color: tagColor, height: 15.0,),
 
@@ -437,7 +489,9 @@ class _GreyState extends State<Grey> {
                         ],
                       ),
 
+
                       Divider(color: tagColor, height: 15.0,),
+
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -522,7 +576,11 @@ class _GreyState extends State<Grey> {
                           print('아동 : $_child_peo');
                           print('check in : $_datevalue1');
                           print('check out : $_datevalue2');
-                          print('check out : $val');
+                          print('check out : $slider_price');
+                          print('home_location     :' + home_location);
+                          print('home_price     : $home_price');
+
+
 
                         },
 
@@ -532,15 +590,18 @@ class _GreyState extends State<Grey> {
 
                   ),
                 ),
-                new SizedBox(height: 10.0),
+                new SizedBox(height: 20.0),
                 new Text(" $usr님, 어떤 방을 찾고 계신가요?",
                     style: TextStyle(fontSize: 20.0, color: Colors.grey[700])),
                 new SizedBox(height: 10.0),
 
                 new Container(
-                  height: 650.0,
+                  height: 700.0,
                   child:_buildGrid(context),
                 ),
+
+                //   _buildGrid(context),
+                //  Expanded(child: _buildGrid(context),),
               ]
           ),
 
@@ -550,10 +611,8 @@ class _GreyState extends State<Grey> {
 
   void changed(e) {
     setState(() {
-      val = e;
+      slider_price= e;
       message = "price \$:  " + "${e.toStringAsFixed(1)}   ";
     });
   }
-
 }
-
