@@ -908,16 +908,6 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
                 child: ListView(
                   children: <Widget>[
                     _previewImage(),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.camera_alt),
-                            onPressed: (){
-                            }
-                        ),
-                      ],
-                    ),
                     _roomInfo(),
                     Divider(height: 2.0),
                     _title(),

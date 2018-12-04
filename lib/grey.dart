@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-
 import 'package:flutter_moapp_project/model/house.dart';
 import 'package:flutter_moapp_project/model/house_repository.dart';
 import 'search.dart';
 import 'Detail.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'DB.dart';
 
 class AccentColorOverride extends StatelessWidget {
   const AccentColorOverride({Key key, this.color, this.child})
@@ -109,7 +109,7 @@ class _GreyState extends State<Grey> {
   }
 
 
-
+  /*
   List<GestureDetector> _buildCard(BuildContext context) {
     List<House> houses = HouseRepository.loadHouse();
 
@@ -164,6 +164,7 @@ class _GreyState extends State<Grey> {
       );
     }).toList();
   }
+  */
 
   Widget _buildGrid(BuildContext context) {
     return
@@ -189,7 +190,7 @@ class _GreyState extends State<Grey> {
     return new GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => DetailPage()));
+            context, MaterialPageRoute(builder: (context) => DetailPage(record: record)));
       },
       child : Card(
         //  Card하나 전체
@@ -214,19 +215,22 @@ class _GreyState extends State<Grey> {
               //         child:
 
               Container(
-                child:     Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(record.hashtag,
-                        style: TextStyle(fontSize: 14.0, color: tagColor)),
-                    Text(record.roomname, style: TextStyle(
-                        fontSize: 22.0, fontWeight: FontWeight.bold)),
-                    //Text(house.addr, style: TextStyle(fontSize: 13.5, fontStyle: FontStyle.italic)),
-                    Text(record.starttime + " is available", style: TextStyle(
-                        fontSize: 13.5, color: color[500])),
-                    Text(record.price.toString() + "원/박", style: TextStyle(
-                        fontSize: 13.5, color: color[500])),
-                  ],
+                child:     Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 16.0, 12.0, 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(record.hashtag,
+                          style: TextStyle(fontSize: 14.0, color: tagColor)),
+                      Text(record.roomname, style: TextStyle(
+                          fontSize: 22.0, fontWeight: FontWeight.bold)),
+                      //Text(house.addr, style: TextStyle(fontSize: 13.5, fontStyle: FontStyle.italic)),
+                      Text(record.starttime + " is available", style: TextStyle(
+                          fontSize: 13.5, color: color[500])),
+                      Text(record.price.toString() + "원/박", style: TextStyle(
+                          fontSize: 13.5, color: color[500])),
+                    ],
+                  ),
                 ),
               )
             ],
@@ -553,69 +557,3 @@ class _GreyState extends State<Grey> {
 
 }
 
-class Record1 {
-  final bool airconditioner;
-  final String city;
-  final String decription;
-  final String detailaddress;
-  final String dong;
-  final String endtime;
-  final bool freeparking;
-  final String hashtag;
-  final int houseID;
-  final bool kitchen;
-  final bool microwave;
-  final int peoplenum;
-  final String photourl1;
-  final String photourl2;
-  final String photourl3;
-  final String photourl4;
-  final int price;
-  final String province;
-  final int renttype;
-  final String roomname;
-  final int roomtype;
-  final String starttime;
-  final String street;
-  final bool tv;
-  final String uid;
-  final bool wifi;
-  final DocumentReference reference;
-
-  Record1.fromMap(Map<String, dynamic> map, {this.reference})
-      :
-        airconditioner = map['airconditioner'],
-        city= map['city'],
-        decription= map['decription'],
-        detailaddress= map['detailaddress'],
-        dong= map['dong'],
-        endtime= map['endtime'],
-        freeparking= map['freeparking='],
-        hashtag= map['hashtag'],
-        houseID= map['houseID'],
-        kitchen= map['kitchen'],
-        microwave= map[' microwave'],
-        peoplenum= map['peoplenum'],
-        photourl1= map['photourl1'],
-        photourl2= map['photourl2'],
-        photourl3= map['photourl3'],
-        photourl4= map['photourl4'],
-        price= map['price'],
-        province= map['privince'],
-        renttype= map['renttype'],
-        roomname= map['roomname'],
-        roomtype= map['roomtype'],
-        starttime= map['starttime'],
-        street= map['street='],
-        tv= map['tv'],
-        uid= map['uid'],
-        wifi= map['wifi'];
-
-
-
-  Record1.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data, reference: snapshot.reference);
-
-  @override
-  String toString() => "Record<$airconditioner:$city:$decription:$detailaddress:$dong:$endtime:$freeparking:$hashtag:$houseID:$kitchen:$microwave:$peoplenum:$photourl1:$photourl2:$photourl3:$photourl4:$price:$province:$renttype:$roomname:$roomtype:$starttime:$street:$tv:$uid:$wifi>";
-}

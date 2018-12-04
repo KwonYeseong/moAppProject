@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'DB.dart';
 
 class DetailPage extends StatefulWidget {
+  final Record1 record;
+
+  DetailPage({@required this.record});
+
   @override
-  _DetailPageState createState() => new _DetailPageState();
+  _DetailPageState createState() => new _DetailPageState(record: record);
 }
 
 class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
+  final Record1 record;
   final tagColor = Colors.redAccent;
   final shadowColor = Colors.red[300];
   bool alreadySaved = false;
 
+  _DetailPageState({@required this.record});
 
   _buildProductImagesWidgets() {
-    TabController imagesController = TabController(length: 3, vsync: this);
+    TabController imagesController = TabController(length: 4, vsync: this);
     return Padding(
       padding: const EdgeInsets.all(0.0),
       child: Container(
@@ -20,15 +27,16 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
         //height: MediaQuery.of(context).size.height / 4,
         child: Center(
           child: DefaultTabController(
-            length: 3,
+            length: 4,
             child: Stack(
               children: <Widget>[
                 TabBarView(
                   controller: imagesController,
                   children: <Widget>[
-                    Image.network('http://newsimg.hankookilbo.com/2017/12/06/201712060419390897_1.jpg'),
-                    Image.network('http://junggun.co.kr/wp-content/uploads/2017/03/cropped-maxresdefault.jpg'),
-                    Image.network('https://media1.s-nbcnews.com/j/newscms/2018_30/1355945/home-exterior-today-180726-tease_3f99937c609d875fece6a12af1594bd9.fit-560w.jpg')
+                    Image.network(record.photourl1),
+                    Image.network(record.photourl2),
+                    Image.network(record.photourl3),
+                    Image.network(record.photourl4),
                   ],
                 ),
                 Container(
@@ -50,9 +58,7 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-
     @override
-
     Column buildButtonColumn(IconData icon, String label) {
       //Color color = Theme.of(context).primaryColor;
       Color color = Colors.blueGrey;
@@ -151,23 +157,10 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                             });
 
                           })
-
                     ],
                   )
-
-
-
-
-
                 ],
-
               ),
-
-
-
-
-
-
 
               Expanded(
                   child: ListView(
@@ -181,13 +174,13 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
 
                             Container(
 
-                              child:Text('환호 해맞이공원 101호 사막뷰!',style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w700),),
+                              child:Text(record.roomname, style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w700),),
                               padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
                             ),
                             ExpansionTile(title:
                             Container(
                                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 5.0),
-                                child: Text('#화이트 #다락방 #밝은집 #동해물과백두산이 마르고 닳도록 #뾰로로로로로로로롱 태그를 달아보자아아아아',style: TextStyle(color:shadowColor ),))
+                                child: Text(record.hashtag, style: TextStyle(color:shadowColor ),))
 
                             )
 
@@ -197,9 +190,9 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                       ),
 
                       ListTile(
-                        title: Text('₩40000 /day',style: TextStyle(color: Colors.grey),),
-                        subtitle: Text('9/3~10/21' +' is available',style: TextStyle(color: Colors.redAccent),),
-                        trailing: RaisedButton(onPressed: (){},
+                        title: Text('${record.price}/day',style: TextStyle(color: Colors.grey),),
+                        subtitle: Text('${record.starttime}~${record.endtime}' +' is available', style: TextStyle(color: Colors.redAccent),),
+                        trailing: RaisedButton(onPressed: (){}, //TODO 연락받을 번호 추가.
                           color: Colors.redAccent,
                           child: Text('지금예약',style: TextStyle(color: Colors.white),),),
                       ),
@@ -461,3 +454,72 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
     );
   }
 }
+
+/*
+class Record1 {
+  final bool airconditioner;
+  final String city;
+  final String decription;
+  final String detailaddress;
+  final String dong;
+  final String endtime;
+  final bool freeparking;
+  final String hashtag;
+  final int houseID;
+  final bool kitchen;
+  final bool microwave;
+  final int peoplenum;
+  final String photourl1;
+  final String photourl2;
+  final String photourl3;
+  final String photourl4;
+  final int price;
+  final String province;
+  final int renttype;
+  final String roomname;
+  final int roomtype;
+  final String starttime;
+  final String street;
+  final bool tv;
+  final String uid;
+  final bool wifi;
+  final DocumentReference reference;
+
+  Record1.fromMap(Map<String, dynamic> map, {this.reference})
+      :
+        airconditioner = map['airconditioner'],
+        city= map['city'],
+        decription= map['decription'],
+        detailaddress= map['detailaddress'],
+        dong= map['dong'],
+        endtime= map['endtime'],
+        freeparking= map['freeparking='],
+        hashtag= map['hashtag'],
+        houseID= map['houseID'],
+        kitchen= map['kitchen'],
+        microwave= map[' microwave'],
+        peoplenum= map['peoplenum'],
+        photourl1= map['photourl1'],
+        photourl2= map['photourl2'],
+        photourl3= map['photourl3'],
+        photourl4= map['photourl4'],
+        price= map['price'],
+        province= map['privince'],
+        renttype= map['renttype'],
+        roomname= map['roomname'],
+        roomtype= map['roomtype'],
+        starttime= map['starttime'],
+        street= map['street='],
+        tv= map['tv'],
+        uid= map['uid'],
+        wifi= map['wifi'];
+
+
+
+  Record1.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
+
+  @override
+  String toString() => "Record<$airconditioner:$city:$decription:$detailaddress:$dong:$endtime:$freeparking:$hashtag:$houseID:$kitchen:$microwave:$peoplenum:$photourl1:$photourl2:$photourl3:$photourl4:$price:$province:$renttype:$roomname:$roomtype:$starttime:$street:$tv:$uid:$wifi>";
+}
+*/

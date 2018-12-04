@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'favorite.dart';
 import 'Detail.dart';
+import 'DB.dart';
 
 Color themecolor = Colors.redAccent;
 
@@ -67,10 +68,12 @@ class FavoriteItemState extends State<FavoriteItem>   with TickerProviderStateMi
     return GestureDetector(
         onTap: () {
           if(editButtonFlag == false){
+            /*
             Navigator
                 .of(context)
                 .push(MaterialPageRoute(
                 builder: (BuildContext context) => DetailPage()));
+                */
           }
           else{
             setState(() {
