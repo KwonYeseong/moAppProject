@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'DB.dart';
 import 'userInfo.dart' as userInfo;
@@ -20,7 +21,7 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
   final shadowColor = Colors.red[300];
   List favoriteList = [];
   String favoriteString;
-  
+
   _DetailPageState({@required this.record});
 
   @override
@@ -37,9 +38,25 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
         favoriteString = document['favorite'].toString();
         favoriteList = favoriteString.split('/');
       }
-      print(favoriteList.toString());
     });
     setState(() {});
+  }
+
+  void displayDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => new CupertinoAlertDialog(
+        title: new Text("연락처"),
+        content: new Text("${record.phoneNumber}"),
+        actions: [
+          CupertinoDialogAction(
+            isDefaultAction: false,
+            child: new Text("Close"),
+            onPressed: () {Navigator.pop(context);},
+          )
+        ],
+      ),
+    );
   }
 
   _buildProductImagesWidgets() {
@@ -136,13 +153,10 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                       ),
 
                       IconButton(
-                          icon: Icon(favoriteList.contains(record.houseID.toString())? Icons.favorite : Icons.favorite_border,
-                            color: Colors.red,),
+                          icon: Icon(favoriteList.contains(record.houseID.toString())? Icons.favorite : Icons.favorite_border, color: Colors.red),
                           onPressed: (){
                             print('sss');
                             setState(() {
-                              //TODO
-                              //리스트에서 삭제
                               if (favoriteList.contains(record.houseID.toString())) {
                                 String temp = "0";
                                 int idx;
@@ -192,18 +206,17 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                       ListTile(
                         title: Text('${record.price}/day',style: TextStyle(color: Colors.grey),),
                         subtitle: Text('${record.starttime}~${record.endtime}' +' is available', style: TextStyle(color: Colors.redAccent),),
-                        trailing: RaisedButton(onPressed: (){}, //TODO 연락받을 번호 추가.
+                        trailing: RaisedButton(
+                          onPressed: displayDialog, //TODO 연락받을 번호 추가.
                           color: Colors.redAccent,
                           child: Text('지금예약',style: TextStyle(color: Colors.white),),),
                       ),
 
                       ExpansionTile(
                         title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            buildButtonColumn(Icons.hotel, '1 bed'),
-                            buildButtonColumn(Icons.not_interested, 'No bath room'),
-                            buildButtonColumn(Icons.people, 'For 1 people'),
+                            Text('이 집에 포함된 다양한 편의시설', style:TextStyle(fontSize: 15.0, fontWeight: FontWeight.w700,color: Colors.black)),
                           ],
                         ),
                         children: <Widget>[
@@ -211,15 +224,7 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                             children: <Widget>[
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  buildButtonColumn(Icons.people, 'For 1 people'),
-                                  buildButtonColumn(Icons.hotel, '1 bed'),
-                                  buildButtonColumn(Icons.not_interested, 'No bath room'),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
+                                children:[
                                   buildButtonColumn(Icons.people, 'For 1 people'),
                                   buildButtonColumn(Icons.hotel, '1 bed'),
                                   buildButtonColumn(Icons.not_interested, 'No bath room'),
@@ -230,26 +235,25 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                           )
                         ],
                       ),
+
                       ExpansionTile(
                         title: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.all(10.0),
-                              child: Text("세계 최고의 건축물! 7대 불가사의에서 하루를!",style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w700,color: Colors.black)),
-                            )
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text("방에 대한 더 자세한 정보",style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w700,color: Colors.black)),
                           ],
                         ),
                         children: <Widget>[
-                          Text('더긴긴긴긴긴긴 설며어어어어어어어엉')
+
+                          Container(
+                            padding: EdgeInsets.fromLTRB(32.0, 0.0, 32.0, 0.0),
+                            child: Row(
+                              children: <Widget>[
+                                Text('주소: ${record.province} ${record.city} ${record.dong}'),
+                              ],
+                            ),
+                          )
                         ],
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Image.network(
-                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqPovjU8WzgHGKz1sRBeTyc6sJiGNdPlP92DZPx6Iuk8DjCMr8',
-                          fit: BoxFit.fitWidth,
-                        ),
                       ),
                     ],
                   ))

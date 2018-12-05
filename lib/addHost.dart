@@ -113,6 +113,11 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
   bool airConditioner = false;
   bool freeParking = false;
 
+  //contact
+  TextEditingController phoneNumberController;
+
+  String phoneNumber = '';
+
   @override
   void initState() {
     super.initState();
@@ -288,6 +293,7 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
       'photourl2':photoUrl2,
       'photourl3':photoUrl3,
       'photourl4':photoUrl4,
+      'phonenumber':phoneNumber
     });
 
   }
@@ -693,7 +699,27 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
               SizedBox(height: interval)
             ],
           ),
-        )
+        ),
+
+        Container(
+          padding: EdgeInsets.fromLTRB(30.0, 0.0, 40.0, 0.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text("연락처를 적어주세요", style: directionStyle),
+              TextField(
+                controller: phoneNumberController,
+                decoration: InputDecoration(hintText: 'ex)010-9999-1111'),
+                onChanged: (text) {
+                  phoneNumber = text;
+                  setState(() {});
+                },
+              ),
+              SizedBox(height: interval)
+            ],
+          ),
+        ),
+
       ],
     );
   }

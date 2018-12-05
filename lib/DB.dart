@@ -144,6 +144,7 @@ class Record1 {
   final bool tv;
   final String uid;
   final bool wifi;
+  final String phoneNumber;
   final DocumentReference reference;
 
   Record1.fromMap(Map<String, dynamic> map, {this.reference})
@@ -158,22 +159,23 @@ class Record1 {
         hashtag= map['hashtag'],
         houseID= map['houseID'],
         kitchen= map['kitchen'],
-        microwave= map[' microwave'],
+        microwave= map['microwave'],
         peoplenum= map['peoplenum'],
         photourl1= map['photourl1'],
         photourl2= map['photourl2'],
         photourl3= map['photourl3'],
         photourl4= map['photourl4'],
         price= map['price'],
-        province= map['privince'],
+        province= map['province'],
         renttype= map['renttype'],
         roomname= map['roomname'],
         roomtype= map['roomtype'],
         starttime= map['starttime'],
-        street= map['street='],
+        street= map['street'],
         tv= map['tv'],
         uid= map['uid'],
-        wifi= map['wifi'];
+        wifi= map['wifi'],
+        phoneNumber = map['phonenumber'];
 
 
 
