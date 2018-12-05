@@ -49,75 +49,28 @@ class LoginPageState extends State<LoginPage>{
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         //color: themecolor,
-        gradient: LinearGradient(
-          // Where the linear gradient begins and ends
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          // Add one stop for each color. Stops should increase from 0 to 1
-          stops: [0.1, 0.3, 0.7, 0.9],
-          colors: [
-            // Colors are easy thanks to Flutter's Colors class.
-            // Colors.yellow[100],
-            Colors.red[200],
-            Colors.red[300],
-            Colors.red[500],
-            Colors.red[600],
-          ],
-        ),
         image: DecorationImage(
           colorFilter: new ColorFilter.mode(
-              Colors.black.withOpacity(0.1), BlendMode.dstATop),
-          image: NetworkImage('https://images.pexels.com/photos/291732/pexels-photo-291732.jpeg?cs='
-              'srgb&dl=adventure-cold-daylight-291732.jpg&fm=jpg'),
+              Colors.black.withOpacity(1.0), BlendMode.dstATop),
+          image: NetworkImage('https://firebasestorage.googleapis.com/v0/b/airbnb-c9e3e.appspot.com/o/NINEJIP1.jpg?alt=media&token=1c411ed2-1f29-4a1f-a88d-ccad2f4e3908'),
           fit: BoxFit.cover,
         ),
       ),
       child: new Column(
         children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(top: 250.0),
-            child: Center(
-              child: Icon(
-                Icons.ac_unit,
-                color: Colors.white,
-                size: 40.0,
-              ),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20.0),
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "HGUBnB",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Text(
-                  "App",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
+          SizedBox(height: MediaQuery.of(context).size.height/1.4,),
           new Container(
             width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 30.0),
+            margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 30),
             alignment: Alignment.center,
             child: new Row(
               children: <Widget>[
+
                 new Expanded(
                   child: new FlatButton(
                     shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(30.0)),
-                    color: Colors.white,
+                    color: Colors.black.withOpacity(0.6),
                     onPressed: () {
                       _signIn().then((FirebaseUser user) {
                         Navigator
@@ -130,6 +83,7 @@ class LoginPageState extends State<LoginPage>{
                       }
                       );
                     },
+
                     child: new Container(
                       padding: const EdgeInsets.symmetric(
                         vertical: 20.0,
@@ -143,7 +97,8 @@ class LoginPageState extends State<LoginPage>{
                               "LOGIN WITH GOOGLE",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: themecolor,
+                                  color: Colors.white,
+                                  fontSize: 22,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),

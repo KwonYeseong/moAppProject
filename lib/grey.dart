@@ -68,7 +68,7 @@ class _GreyState extends State<Grey> {
     myController.dispose();
     super.dispose();
   }
-  int totalhouse =  0;
+
   final color = Colors.grey;
   final tagColor = Colors.redAccent;
   String usr = "Yeseong";
@@ -108,58 +108,8 @@ class _GreyState extends State<Grey> {
 
   Widget _buildGrid(BuildContext context) {
 
-    if(userInfo.renttype == 3  && home_price ==0 && home_location.length == 0 ){
-      return
-        StreamBuilder<QuerySnapshot>(
-          stream:Firestore.instance.collection('HOUSE').snapshots(),
-          builder: (context, snapshot){
-            if(!snapshot.hasData) return LinearProgressIndicator();
-            return _buildGridList(context, snapshot.data.documents);
-          },
-        );
-    }
 
-    else if(userInfo.renttype == 3 && home_price ==0 && home_location.length != 0 ){
-      return
-        StreamBuilder<QuerySnapshot>(
-          stream:Firestore.instance.collection('HOUSE')
-              .where('dong', isEqualTo: home_location)
-              .snapshots(),
-          builder: (context, snapshot){
-            if(!snapshot.hasData) return LinearProgressIndicator();
-            return _buildGridList(context, snapshot.data.documents);
-          },
-        );
-    }
-    else if(userInfo.renttype == 3 && home_price !=0 && home_location.length == 0 ){
-      return
-        StreamBuilder<QuerySnapshot>(
-          stream:Firestore.instance.collection('HOUSE')
-              .where('price', isLessThan: home_price)
-              .snapshots(),
-          builder: (context, snapshot){
-            if(!snapshot.hasData) return LinearProgressIndicator();
-            return _buildGridList(context, snapshot.data.documents);
-          },
-        );
-    }
-
-    else if(userInfo.renttype == 3 && home_price !=0 && home_location.length != 0 ){
-      return
-        StreamBuilder<QuerySnapshot>(
-          stream:Firestore.instance.collection('HOUSE')
-              .where('dong', isEqualTo: home_location)
-              .where('price', isLessThanOrEqualTo: home_price)
-              .snapshots(),
-          builder: (context, snapshot){
-            if(!snapshot.hasData) return LinearProgressIndicator();
-            return _buildGridList(context, snapshot.data.documents);
-          },
-        );
-    }
-
-
-    else if(userInfo.renttype != 3&&home_price == 0 && home_location.length == 0 ){
+    if(home_price == 0 && home_location.length == 0 ){
       return
         StreamBuilder<QuerySnapshot>(
           stream:Firestore.instance.collection('HOUSE').where('renttype', isEqualTo: userInfo.renttype).snapshots(),
@@ -168,7 +118,7 @@ class _GreyState extends State<Grey> {
             return _buildGridList(context, snapshot.data.documents);
           },
         );
-    } else if(userInfo.renttype != 3 && home_price != 0 && home_location.length == 0){
+    } else if(home_price != 0 && home_location.length == 0){
       return
         StreamBuilder<QuerySnapshot>(
           stream:Firestore.instance.collection('HOUSE')
@@ -179,7 +129,7 @@ class _GreyState extends State<Grey> {
             return _buildGridList(context, snapshot.data.documents);
           },
         );
-    }else if(userInfo.renttype != 3 &&home_price == 0 && home_location.length != 0){
+    }else if(home_price == 0 && home_location.length != 0){
       return
         StreamBuilder<QuerySnapshot>(
           stream:Firestore.instance.collection('HOUSE')
@@ -191,7 +141,7 @@ class _GreyState extends State<Grey> {
           },
         );
     }
-    else if(userInfo.renttype != 3 &&home_price != 0 && home_location.length != 0){
+    else if(home_price != 0 && home_location.length != 0){
       return
         StreamBuilder<QuerySnapshot>(
           stream:Firestore.instance.collection('HOUSE')
@@ -211,9 +161,9 @@ class _GreyState extends State<Grey> {
 
   Widget _buildGridList(BuildContext context, List<DocumentSnapshot> snapshot) {
     return ListView(
-      children: snapshot.map((data) => _buildGridListItem(context, data))
-          .toList(),
-    );
+        children: snapshot.map((data) => _buildGridListItem(context, data))
+            .toList(),
+      );
   }
 
   Widget _buildGridListItem(BuildContext context, DocumentSnapshot data) {
@@ -221,7 +171,7 @@ class _GreyState extends State<Grey> {
     return  new GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => DetailPage(record: record,)));
+            context, MaterialPageRoute(builder: (context) => DetailPage(record: record)));
       },
       child : Card(
         //  Card하나 전체
@@ -286,28 +236,22 @@ class _GreyState extends State<Grey> {
 
   //dropdownbutton
   void initState(){
-    _values.addAll(["Short","Long","Transfer","Total"]);
+    _values.addAll(["Short","Long","Transfer"]);
     _value = _values.elementAt(userInfo.renttype);
   }
 
   void _onChaged(String value){
     setState(() {
       _value = value;
-      print(_value);
-
-
+      print(value);
       if(value == "Short"){
         userInfo.renttype = 0;
       }else if(value == "Long"){
         userInfo.renttype = 1;
       }else if(value == "Transfer"){
         userInfo.renttype = 2;
-      }else if(value == "Total") {
-        userInfo.renttype = 3;
-
       }
-      print(userInfo.renttype);
-      print(totalhouse);
+      //userInfo.renttype = ;
 
     });
   }
