@@ -230,23 +230,7 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                                 });
                               }
                           ),
-                          /*
-                          IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                if(uid == userUid) {
-                  DocumentReference documentReference = Firestore.instance
-                      .document('FINAL/$id');
-                  documentReference.delete();
-                  final StorageReference ref =
-                  FirebaseStorage.instance.ref().child('$id-0.jpg');
-                  ref.delete();
-                  Navigator.pop(context);
-                } else{
-                  print('writer is not user!');
-                }
-              }),
-                          */
+
                           record.uid == userInfo.user.uid ? 
                           IconButton(
                               icon: Icon(Icons.delete),
@@ -310,26 +294,12 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children:[
-                                  /*
-                                  wifi,
-                                  tv,
-                                  kitchen,
-                                  microWave,
-                                  airConditioner,
-                                  freeParking,
-                                  */
                                   record.wifi == true ? buildButtonColumn(Icons.wifi, 'WIFI') : SizedBox(width: 0.0),
                                   record.tv == true ? buildButtonColumn(Icons.tv, 'TV') : SizedBox(width: 0.0),
                                   record.kitchen == true ? buildButtonColumn(Icons.kitchen, '부엌') : SizedBox(width: 0.0),
                                   record.microwave == true ? buildButtonColumn(Icons.picture_in_picture, '전자레인지') : SizedBox(width: 0.0),
                                   record.airconditioner == true ? buildButtonColumn(Icons.ac_unit, '에어컨') : SizedBox(width: 0.0),
                                   record.freeparking == true ? buildButtonColumn(Icons.directions_car, '주차') : SizedBox(width: 0.0),
-                                  /*
-                                  buildButtonColumn(Icons.people, 'For 1 people'),
-                                  buildButtonColumn(Icons.hotel, '1 bed'),
-                                  buildButtonColumn(Icons.not_interested, 'No bath room'),
-                                  buildButtonColumn(Icons.home, 'Mini 2 room'),
-                                  */
                                 ],
                               ),
                             ],
@@ -345,14 +315,16 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                           ],
                         ),
                         children: <Widget>[
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Text('주소: ${record.province} ${record.city} ${record.dong} ${record.detailaddress}',
-                                  style: TextStyle(fontSize: 13.0,color: Colors.black)),
-                              Text('상세설명: ${record.decription}'
-                              ,style: TextStyle(fontSize: 13.0, color: Colors.black))
-                            ],
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.fromLTRB(24.0, 0.0, 0.0, 0.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text('주소:${record.province} ${record.city} ${record.dong} ${record.detailaddress}', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.blueGrey)),
+                                Text('상세설명: ${record.decription}', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.blueGrey))
+                              ],
+                            ),
                           )
                         ],
                       ),
@@ -364,100 +336,4 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
       ),
     );
   }
-
-
-/*
-  Future<void> _neverSatisfied() async {
-    SizedBox buildButtonColumn(IconData icon, String label) {
-      //Color color = Theme.of(context).primaryColor;
-      Color color = Colors.blueGrey[700];
-
-      return SizedBox(
-
-
-        width: 90,
-
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-
-            Icon(icon, color: color,size: 35.0,),
-            Container(
-              margin: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                label,
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w400,
-                  color: color,
-                ),
-              ),
-            ),
-          ],
-        ),
-
-      );
-    }
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('More Detail'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    buildButtonColumn(Icons.desktop_mac, 'No bath room'),
-                    buildButtonColumn(Icons.home, 'Mini 2 room'),
-                  ],
-                ),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    buildButtonColumn(Icons.not_interested, 'No bath room'),
-                    buildButtonColumn(Icons.airline_seat_legroom_reduced, 'Mini 2 room'),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    buildButtonColumn(Icons.not_interested, 'No bath room'),
-                    buildButtonColumn(Icons.home, 'Mini 2 room'),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    buildButtonColumn(Icons.people, 'For 1 people'),
-                    buildButtonColumn(Icons.home, 'Mini 2 room'),
-                  ],
-                )   ,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    buildButtonColumn(Icons.home, 'Mini 2 room'),
-                    buildButtonColumn(Icons.hotel, '1 bed'),
-                  ],
-                )   ,
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-  */
 }

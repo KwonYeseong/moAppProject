@@ -4,7 +4,6 @@ import 'Detail.dart';
 
 Color themecolor = Colors.redAccent;
 
-
 class FavoriteItem extends StatefulWidget {
   int houseID;
   String roomname;
