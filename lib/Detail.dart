@@ -59,10 +59,6 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
       ),
     );
   }
-  void setupFacilityList(){
-
-  }
-
   _buildProductImagesWidgets() {
     TabController imagesController = TabController(length: 4, vsync: this);
     return Padding(
@@ -149,11 +145,16 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      IconButton(
-                          icon: Icon(Icons.arrow_back),
-                          onPressed: (){
-                            Navigator.pop(context);
-                          }
+                      Column(
+                        children: <Widget>[
+                          IconButton(
+                              icon: Icon(Icons.arrow_back),
+                              onPressed: (){
+                                Navigator.pop(context);
+                              }
+                          ),
+                          SizedBox(height: 50.0)
+                        ],
                       ),
                       /*
                       IconButton(
@@ -180,53 +181,89 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                             });
                           }
                       )*/
-                      IconButton(
-                          icon: Icon(favoriteList.contains(record.houseID.toString())? Icons.favorite : Icons.favorite_border,
-                            color: Colors.red,),
-                          onPressed: (){
-                            print('sss');
-                            setState(() {
-                              //TODO
-                              int length = favoriteList.length;
-                              int idx;
-                              if(length == 1)
-                                idx = 0;
-                              else
-                                idx = favoriteList.indexOf(record.houseID.toString());
-                              //리스트에서 삭제
-                              if (favoriteList.contains(record.houseID.toString())) {
-                                var ss = "";
+                      Column(
+                        children: <Widget>[
+                          IconButton(
+                              icon: Icon(favoriteList.contains(record.houseID.toString())? Icons.favorite : Icons.favorite_border,
+                                color: Colors.red,),
+                              onPressed: (){
+                                print('sss');
+                                setState(() {
+                                  //TODO
+                                  int length = favoriteList.length;
+                                  int idx;
+                                  if(length == 1)
+                                    idx = 0;
+                                  else
+                                    idx = favoriteList.indexOf(record.houseID.toString());
+                                  //리스트에서 삭제
+                                  if (favoriteList.contains(record.houseID.toString())) {
+                                    var ss = "";
 
-                                print('idx $idx');
-                                favoriteList.removeAt(idx);
-                                print('remove ${record.houseID} and ' + favoriteList.toString() + 'length: ${favoriteList.length}');
+                                    print('idx $idx');
+                                    favoriteList.removeAt(idx);
+                                    print('remove ${record.houseID} and ' + favoriteList.toString() + 'length: ${favoriteList.length}');
 
 
-                                if(length == 1) {
-                                  favoriteList.forEach((t) {
-                                    ss = ss + "${t}";
-                                    print('ss:${ss}');
-                                  });
-                                }
-                                else{
-                                  favoriteList.forEach((t) {
-                                    ss = ss + "${t}";
-                                    print('ss:${ss}');
-                                  });
-                                }
+                                    if(length == 1) {
+                                      favoriteList.forEach((t) {
+                                        ss = ss + "${t}";
+                                        print('ss:${ss}');
+                                      });
+                                    }
+                                    else{
+                                      favoriteList.forEach((t) {
+                                        ss = ss + "${t}";
+                                        print('ss:${ss}');
+                                      });
+                                    }
 
-                                Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':'$ss'});
-                                initFavoriteList();
-                              } else { // 리스트에 추가
-                                if(length == 0)
-                                  Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':'${record.houseID}'});
-                                else
-                                  Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':favoriteString + '/${record.houseID}'});
-                                initFavoriteList();
+                                    Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':'$ss'});
+                                    initFavoriteList();
+                                  } else { // 리스트에 추가
+                                    if(length == 0)
+                                      Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':'${record.houseID}'});
+                                    else
+                                      Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':favoriteString + '/${record.houseID}'});
+                                    initFavoriteList();
+                                  }
+                                });
                               }
-                            });
-                          }
-                      )
+                          ),
+                          /*
+                          IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                if(uid == userUid) {
+                  DocumentReference documentReference = Firestore.instance
+                      .document('FINAL/$id');
+                  documentReference.delete();
+                  final StorageReference ref =
+                  FirebaseStorage.instance.ref().child('$id-0.jpg');
+                  ref.delete();
+                  Navigator.pop(context);
+                } else{
+                  print('writer is not user!');
+                }
+              }),
+                          */
+                          record.uid == userInfo.user.uid ? 
+                          IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                DocumentReference documentReference = Firestore.instance.document('HOUSE/${record.houseID}');
+                                documentReference.delete();
+
+                                FirebaseStorage.instance.ref().child('${record.houseID}-1.jpg').delete();
+                                FirebaseStorage.instance.ref().child('${record.houseID}-2.jpg').delete();
+                                FirebaseStorage.instance.ref().child('${record.houseID}-3.jpg').delete();
+                                FirebaseStorage.instance.ref().child('${record.houseID}-4.jpg').delete();
+                                Navigator.pop(context);
+                              })
+                              : SizedBox(height: 50.0),
+                        ],
+                      ),
+
                     ],
                   )
                 ],
@@ -242,7 +279,7 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                           children: <Widget>[
                             Container(
                               child:Text(record.roomname, style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w700),),
-                              padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
+                              padding: EdgeInsets.fromLTRB(15.0, 12.0, 0.0, 0.0),
                             ),
                             Container(
                               padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),child: Text(record.hashtag, style: TextStyle(color:shadowColor))
@@ -257,7 +294,7 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                         trailing: RaisedButton(
                           onPressed: displayDialog, //TODO 연락받을 번호 추가.
                           color: Colors.redAccent,
-                          child: Text('지금예약',style: TextStyle(color: Colors.white),),),
+                          child: Text('지금예약', style: TextStyle(color: Colors.white))),
                       ),
 
                       ExpansionTile(

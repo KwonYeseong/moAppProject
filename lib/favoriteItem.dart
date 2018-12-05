@@ -20,6 +20,7 @@ class FavoriteItem extends StatefulWidget {
   FavoriteItem({this.houseID, this.roomname, this.dong, this.roomtype, this.price,
     this.photoURL1,this.photoURL2,this.photoURL3,this.photoURL4 ,this.callback});
 
+  @override
   FavoriteItemState createState() => new FavoriteItemState();
 }
 
