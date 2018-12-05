@@ -155,7 +155,7 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                             Navigator.pop(context);
                           }
                       ),
-
+                      /*
                       IconButton(
                           icon: Icon(favoriteList.contains(record.houseID.toString())? Icons.favorite : Icons.favorite_border, color: Colors.red),
                           onPressed: (){
@@ -175,6 +175,53 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                                 initFavoriteList();
                               } else { // 리스트에 추가
                                 Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':favoriteString + '/${record.houseID}'});
+                                initFavoriteList();
+                              }
+                            });
+                          }
+                      )*/
+                      IconButton(
+                          icon: Icon(favoriteList.contains(record.houseID.toString())? Icons.favorite : Icons.favorite_border,
+                            color: Colors.red,),
+                          onPressed: (){
+                            print('sss');
+                            setState(() {
+                              //TODO
+                              int length = favoriteList.length;
+                              int idx;
+                              if(length == 1)
+                                idx = 0;
+                              else
+                                idx = favoriteList.indexOf(record.houseID.toString());
+                              //리스트에서 삭제
+                              if (favoriteList.contains(record.houseID.toString())) {
+                                var ss = "";
+
+                                print('idx $idx');
+                                favoriteList.removeAt(idx);
+                                print('remove ${record.houseID} and ' + favoriteList.toString() + 'length: ${favoriteList.length}');
+
+
+                                if(length == 1) {
+                                  favoriteList.forEach((t) {
+                                    ss = ss + "${t}";
+                                    print('ss:${ss}');
+                                  });
+                                }
+                                else{
+                                  favoriteList.forEach((t) {
+                                    ss = ss + "${t}";
+                                    print('ss:${ss}');
+                                  });
+                                }
+
+                                Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':'$ss'});
+                                initFavoriteList();
+                              } else { // 리스트에 추가
+                                if(length == 0)
+                                  Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':'${record.houseID}'});
+                                else
+                                  Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':favoriteString + '/${record.houseID}'});
                                 initFavoriteList();
                               }
                             });

@@ -1,24 +1,23 @@
-
 import 'package:flutter/material.dart';
 import 'favorite.dart';
 import 'Detail.dart';
-import 'DB.dart';
 
 Color themecolor = Colors.redAccent;
 
-class FavoriteItem extends StatefulWidget {
-  final int id;
-  final String name;
-  final String location;
-  final String type;
-  final String cost;
-  final String photoURL1;
-  final String photoURL2;
-  final String photoURL3;
-  final String photoURL4;
-  final VoidCallback callback;
 
-  FavoriteItem({this.id, this.name, this.location, this.type, this.cost,
+class FavoriteItem extends StatefulWidget {
+  int houseID;
+  String roomname;
+  String dong;
+  int roomtype;
+  int price;
+  String photoURL1;
+  String photoURL2;
+  String photoURL3;
+  String photoURL4;
+  VoidCallback callback;
+
+  FavoriteItem({this.houseID, this.roomname, this.dong, this.roomtype, this.price,
     this.photoURL1,this.photoURL2,this.photoURL3,this.photoURL4 ,this.callback});
 
   FavoriteItemState createState() => new FavoriteItemState();
@@ -62,18 +61,24 @@ class FavoriteItemState extends State<FavoriteItem>   with TickerProviderStateMi
 
   }
 
+  String RoomText(int value) {
+    switch(value){
+      case 0: return '원룸';break;
+      case 1: return '미투';break;
+      case 2: return '정투';break;
+      case 3: return '기타';break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
           if(editButtonFlag == false){
-            /*
             Navigator
                 .of(context)
                 .push(MaterialPageRoute(
                 builder: (BuildContext context) => DetailPage()));
-                */
           }
           else{
             setState(() {
@@ -104,14 +109,14 @@ class FavoriteItemState extends State<FavoriteItem>   with TickerProviderStateMi
                         Row(
                           children: <Widget>[
                             new Text(
-                              widget.type,
+                              RoomText(widget.roomtype),
                               style: new TextStyle(
                                   fontSize: 18.0,
                                   color: themecolor,
                                   fontWeight: FontWeight.w600),
                             ),
                             SizedBox(width: 10.0),
-                            new Text(widget.location,
+                            new Text(widget.dong,
                                 style: new TextStyle(
                                     fontSize: 18.0,
                                     color: themecolor,
@@ -120,7 +125,7 @@ class FavoriteItemState extends State<FavoriteItem>   with TickerProviderStateMi
                         ),
                         SizedBox(height: 5.0),
                         new Text(
-                          widget.name,
+                          widget.roomname,
                           style: new TextStyle(
                               fontSize: 25.0,
                               color: Colors.black,
@@ -128,7 +133,7 @@ class FavoriteItemState extends State<FavoriteItem>   with TickerProviderStateMi
                         ),
                         SizedBox(height: 5.0),
                         new Text(
-                          widget.cost,
+                          widget.price.toString(),
                           style: new TextStyle(fontSize: 20.0, color: Colors.black),
                         ),
                       ],

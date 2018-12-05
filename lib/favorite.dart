@@ -1,44 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
+import 'userInfo.dart';
+import 'package:collection/collection.dart';
+
 
 import 'favoriteItem.dart';
 bool editButtonFlag = false;
 bool selected = false;
+int houseIndex;
+var temp;
 
+List<String> favoriteIndex = [];
 List<FavoriteItem> removeItem = [];
-List<FavoriteItem> favoriteItems = [
-  new FavoriteItem(
-    id: 0,
-    name: "고양이가 있는 해맞이 공원 원룸",
-    location: "환호동",
-    type: "단기",
-    cost: "30000원 /박",
-    photoURL1:
-    "https://static1.squarespace.com/static/53403192e4b008f8c6d7fa3b/5b09d7fd575d1fdde96905cb/5b09d898352f53c0a5043ad5/1527372349483/Screen+Shot+2018-05-24+at+8.35.34+AM.jpg?format=2500w",
-    photoURL2:
-    "https://static1.squarespace.com/static/53403192e4b008f8c6d7fa3b/5b09d7fd575d1fdde96905cb/5b09d7fe70a6addca9a91468/1527371785262/IMG_2452-HDR-154.jpg?format=2500w",
-    photoURL3:
-    "https://static1.squarespace.com/static/53403192e4b008f8c6d7fa3b/5b09d7fd575d1fdde96905cb/5b09d89803ce64b89506964d/1527372349499/Screen+Shot+2018-05-24+at+8.35.22+AM.jpg?format=2500w",
-    photoURL4:
-    "https://static1.squarespace.com/static/53403192e4b008f8c6d7fa3b/5b09d7fd575d1fdde96905cb/5b09d89aaa4a990332e16ff4/1527372349498/Screen+Shot+2018-05-19+at+8.29.49+PM.jpg?format=2500w",
-  ),
-  new FavoriteItem(
-    id: 1,
-    name: "편세권 포세권 역세권 원룸",
-    location: "서초구 반포동",
-    type: "장기",
-    cost: "600,000원 /월",
-    photoURL1:
-    "https://www.rent.com/blog/wp-content/uploads/2015/05/How-Much-Would-You-Pay-For-Your-Dream-Apartment-Rental-672x378.jpg",
-    photoURL2:
-    "https://assets3.thrillist.com/v1/image/1647776/size/tmg-article_default_mobile.jpg",
-    photoURL3:
-    "http://www.inzagreb.com/galerija/1443711655_main_img0.jpg",
-    photoURL4:
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdz3NzUZ3cZFsFvgJ0XW-JKVmz3gDJTgEz-xtEfkjwQKkAEKmg",
-  )
-];
-//List<bool> selected = new List<bool>(favoriteItems.length);
+List<FavoriteItem> favoriteItems2 = [];
+
 
 
 class FavoriteList extends StatefulWidget {
@@ -47,7 +24,79 @@ class FavoriteList extends StatefulWidget {
 }
 
 class FavoriteListState extends State<FavoriteList> {
+  Function deepEq = const DeepCollectionEquality().equals;
   bool longPressFlag = false;
+  FavoriteItem templist = new FavoriteItem();
+  String dbstring = "";
+
+  void initState(){
+    super.initState();
+    setState(() {
+      _getFavorite().then((bool value){
+        _loadFavoriteList();
+      });
+    });
+  }
+
+
+  Future<bool> _getFavorite() async{
+    print('getFavorite');
+    favoriteIndex.clear();
+    favoriteItems2.clear();
+
+    var value;
+    await Firestore.instance.collection('USER').document('${user.uid}').get()
+        .then((events){
+      print('순서왜이래\n');
+      value =  events.data['favorite'].toString();
+      print('value: $value');
+    });
+
+
+    value.split('/');
+    print('size: ${value.length}');
+    for(int i = 0; i < value.length; i++) {
+      if (value[i] != '/') {
+        print('temp[$i]: ${value[i]}');
+        favoriteIndex.add(value[i]);
+      }
+    }
+    return true;
+
+  }
+
+  void addItem(FavoriteItem item) {
+    favoriteItems2.add(item);
+    print('size of favoriteitem2: ${favoriteItems2.length}');
+  }
+
+
+  Future<void> _loadFavoriteList() async{
+    //favoriteItems2.clear();
+
+    for(String a in favoriteIndex) {
+      int index = int.parse(a);
+      print('어 왜??');
+      Firestore.instance.collection('HOUSE').document('$index').snapshots()
+          .listen((data) {
+        print('??');
+        templist = new FavoriteItem(
+          houseID: data['houseID'],
+          roomname: data['roomname'],
+          dong: data['dong'],
+          roomtype: data['roomtype'],
+          price: data['price'],
+          photoURL1: data['photourl1'],
+          photoURL2: data['photourl2'],
+          photoURL3: data['photourl3'],
+          photoURL4: data['photourl4'],
+        );
+        addItem(templist);
+        setState(() {});
+      });
+    }
+
+  }
 
 
   String editText() {
@@ -58,10 +107,28 @@ class FavoriteListState extends State<FavoriteList> {
   }
 
   void removeItem(FavoriteItem item){
+    int length = favoriteItems2.length;
+    int idx;
+    if(length == 1)
+      idx = 0;
+    else
+      idx = favoriteItems2.indexOf(item);
+    print('idx:$idx');
+    //리스트에서 삭제
     setState(() {
-      if(favoriteItems.contains(item)) {
+      if(favoriteItems2.contains(item)) {
         print('remove\n');
-        favoriteItems.remove(item);
+        favoriteItems2.remove(item);
+        favoriteIndex.removeAt(idx);
+
+
+        favoriteIndex.forEach((n){
+          print('??');
+          print('n ${n.toString()}');
+          dbstring = dbstring + n.toString();
+        });
+        print('dbstring $dbstring');
+        Firestore.instance.document('USER/${user.uid}').setData({'favorite':'${dbstring}'});
       }
     });
   }
@@ -78,7 +145,6 @@ class FavoriteListState extends State<FavoriteList> {
       }
     });
   }
-
 
 
   @override
@@ -129,12 +195,12 @@ class FavoriteListState extends State<FavoriteList> {
                 Divider(height: 2.0, indent: 2.0),
                 Expanded(
                     child: new ListView(
-                        children: favoriteItems
+                        children: favoriteItems2
                             .map((item) => new FavoriteItem(
-                          name: item.name,
-                          location: item.location,
-                          type: item.type,
-                          cost: item.cost,
+                          roomname: item.roomname,
+                          dong: item.dong,
+                          roomtype: item.roomtype,
+                          price: item.price,
                           photoURL1: item.photoURL1,
                           photoURL2: item.photoURL2,
                           photoURL3: item.photoURL3,

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_moapp_project/userInfo.dart' as userInfo;
 
-import 'package:flutter_moapp_project/model/house.dart';
-import 'package:flutter_moapp_project/model/house_repository.dart';
-import 'search.dart';
 import 'Detail.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'DB.dart';
+import 'color.dart';
 
 class AccentColorOverride extends StatelessWidget {
   const AccentColorOverride({Key key, this.color, this.child})
@@ -25,32 +22,20 @@ class AccentColorOverride extends StatelessWidget {
   }
 }
 
-
 class Grey extends StatefulWidget {
   @override
   _GreyState createState() => new  _GreyState();
 }
 
-
-
-
-
 class _GreyState extends State<Grey> {
   String home_location = '';
   int home_price = 0;
-
-
-
   final myController = TextEditingController();
-
   int slider_price = 0;
 
-  // double e=4.00;
   String message;
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-
-//dropdownbutton
   String _value = null;
   String _datevalue1 = '';
   String _datevalue2 = '';
@@ -77,17 +62,12 @@ class _GreyState extends State<Grey> {
     if(picked != null) setState(() => _datevalue2 = picked.toString());
   }
 
-
-
   @override
   void dispose() {
     // Clean up the controller when the Widget is disposed
     myController.dispose();
     super.dispose();
-
-
   }
-
 
   final color = Colors.grey;
   final tagColor = Colors.redAccent;
@@ -180,15 +160,9 @@ class _GreyState extends State<Grey> {
   }
 
   Widget _buildGridList(BuildContext context, List<DocumentSnapshot> snapshot) {
-    return
-      //  Expanded(
-      //     child:
-      ListView(
-
+    return ListView(
         children: snapshot.map((data) => _buildGridListItem(context, data))
             .toList(),
-
-        // ),
       );
   }
 
@@ -309,7 +283,7 @@ class _GreyState extends State<Grey> {
                                   children: <Widget>[
                                     Container(
 
-                                      child:   Icon(Icons.home,color: tagColor,),
+                                      child:   Icon(Icons.home,color: purple5,),
                                       width: MediaQuery.of(context).size.width/17,
                                     ),
 
@@ -378,7 +352,8 @@ class _GreyState extends State<Grey> {
                       ),
 
 
-                      Divider(color: tagColor, height: 15.0,),
+                      Divider(color: accpurple, height: 15.0,),
+
 
                       //   Icon(Icons.monetization_on),
 
@@ -399,7 +374,7 @@ class _GreyState extends State<Grey> {
                           Container(
                             width: MediaQuery.of(context).size.width/1.8,
                             child:     Slider(
-                                activeColor: tagColor,
+                                activeColor: accpurple1,
                                 inactiveColor: color,
                                 value: slider_price.toDouble(),
                                 max: 150000, min: 0.0, divisions: 150,
@@ -419,7 +394,7 @@ class _GreyState extends State<Grey> {
 
 
 
-                      Divider(color: tagColor, height: 15.0,),
+                      Divider(color: accpurple, height: 15.0,),
 
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -490,7 +465,8 @@ class _GreyState extends State<Grey> {
                       ),
 
 
-                      Divider(color: tagColor, height: 15.0,),
+                      Divider(color: accpurple, height: 15.0,),
+
 
 
                       Row(
@@ -547,7 +523,7 @@ class _GreyState extends State<Grey> {
                       ),
 
                       InkWell(
-                        splashColor: Colors.redAccent,
+                        splashColor: Colors.deepPurpleAccent[100],
                         highlightColor: Colors.yellow,
                         child: Container(
                           width: MediaQuery.of(context).size.width/2,
@@ -560,11 +536,7 @@ class _GreyState extends State<Grey> {
                               decoration: new BoxDecoration(
 
                                 // color: Colors.blueGrey,
-                                  color: tagColor,
-                                  border: new Border.all(
-                                      color: tagColor,
-                                      width: 0.5
-                                  ),
+                                  color: pur2,
                                   borderRadius: new BorderRadius.circular(20.0)
                               ),
                               child: Text('Search',style: new TextStyle(color: Colors.white, fontSize: 22.0),)
