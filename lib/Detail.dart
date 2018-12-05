@@ -18,25 +18,29 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
   final Record1 record;
   final tagColor = Colors.redAccent;
   final shadowColor = Colors.red[300];
-  bool alreadySaved = false;
-
+  List favoriteList = [];
+  String favoriteString;
+  
   _DetailPageState({@required this.record});
 
-  //TODO
-  //uid값을 비교해서 USER내부의 favorite를 String를 받아오기
-  //String안에 값들을 split으로 나누고 id와 같으면 하트 빨간 아니면 빈하트
-  /*
-  Future<void> getIndex() async{
+  @override
+  initState(){
+    super.initState();
+    initFavoriteList();
+  }
+
+  Future<void> initFavoriteList() async{
     CollectionReference ref = Firestore.instance.collection('USER');
     QuerySnapshot events = await ref.getDocuments();
     events.documents.forEach((document){
       if(userInfo.user.uid == document.documentID){
-
+        favoriteString = document['favorite'].toString();
+        favoriteList = favoriteString.split('/');
       }
-      houseIndex = document['index'];
+      print(favoriteList.toString());
     });
+    setState(() {});
   }
-  */
 
   _buildProductImagesWidgets() {
     TabController imagesController = TabController(length: 4, vsync: this);
@@ -132,15 +136,28 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                       ),
 
                       IconButton(
-                          icon: Icon(alreadySaved ? Icons.favorite : Icons.favorite_border,
-                            color: alreadySaved ? Colors.red : Colors.red,),
+                          icon: Icon(favoriteList.contains(record.houseID.toString())? Icons.favorite : Icons.favorite_border,
+                            color: Colors.red,),
                           onPressed: (){
                             print('sss');
                             setState(() {
-                              if (alreadySaved) {
-                                alreadySaved = false;
-                              } else {
-                                alreadySaved = true;
+                              //TODO
+                              //리스트에서 삭제
+                              if (favoriteList.contains(record.houseID.toString())) {
+                                String temp = "0";
+                                int idx;
+                                idx = favoriteList.indexOf(record.houseID.toString());
+                                favoriteList.removeAt(idx);
+                                print('remove ${record.houseID} and ' + favoriteList.toString());
+                                favoriteList.forEach((t){
+                                  if(t == '0') { }
+                                  else {temp = temp + '/$t';}
+                                });
+                                Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':temp});
+                                initFavoriteList();
+                              } else { // 리스트에 추가
+                                Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':favoriteString + '/${record.houseID}'});
+                                initFavoriteList();
                               }
                             });
                           }
