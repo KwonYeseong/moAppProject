@@ -20,6 +20,7 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
   final tagColor = Colors.redAccent;
   final shadowColor = Colors.red[300];
   List favoriteList = [];
+
   String favoriteString;
 
   _DetailPageState({@required this.record});
@@ -57,6 +58,9 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
         ],
       ),
     );
+  }
+  void setupFacilityList(){
+
   }
 
   _buildProductImagesWidgets() {
@@ -193,11 +197,8 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                               child:Text(record.roomname, style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w700),),
                               padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
                             ),
-                            ExpansionTile(
-                                title: Container(
-                                    padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 5.0),
-                                    child: Text(record.hashtag, style: TextStyle(color:shadowColor ))
-                                )
+                            Container(
+                              padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),child: Text(record.hashtag, style: TextStyle(color:shadowColor))
                             )
                           ],
                         ),
@@ -225,10 +226,26 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children:[
+                                  /*
+                                  wifi,
+                                  tv,
+                                  kitchen,
+                                  microWave,
+                                  airConditioner,
+                                  freeParking,
+                                  */
+                                  record.wifi == true ? buildButtonColumn(Icons.wifi, 'WIFI') : SizedBox(width: 0.0),
+                                  record.tv == true ? buildButtonColumn(Icons.tv, 'TV') : SizedBox(width: 0.0),
+                                  record.kitchen == true ? buildButtonColumn(Icons.kitchen, '부엌') : SizedBox(width: 0.0),
+                                  record.microwave == true ? buildButtonColumn(Icons.picture_in_picture, '전자레인지') : SizedBox(width: 0.0),
+                                  record.airconditioner == true ? buildButtonColumn(Icons.ac_unit, '에어컨') : SizedBox(width: 0.0),
+                                  record.freeparking == true ? buildButtonColumn(Icons.directions_car, '주차') : SizedBox(width: 0.0),
+                                  /*
                                   buildButtonColumn(Icons.people, 'For 1 people'),
                                   buildButtonColumn(Icons.hotel, '1 bed'),
                                   buildButtonColumn(Icons.not_interested, 'No bath room'),
                                   buildButtonColumn(Icons.home, 'Mini 2 room'),
+                                  */
                                 ],
                               ),
                             ],
@@ -240,18 +257,18 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text("방에 대한 더 자세한 정보",style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w700,color: Colors.black)),
+                            Text("방에 대한 더 자세한 정보", style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w700,color: Colors.black)),
                           ],
                         ),
                         children: <Widget>[
-
-                          Container(
-                            padding: EdgeInsets.fromLTRB(32.0, 0.0, 32.0, 0.0),
-                            child: Row(
-                              children: <Widget>[
-                                Text('주소: ${record.province} ${record.city} ${record.dong}'),
-                              ],
-                            ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text('주소: ${record.province} ${record.city} ${record.dong} ${record.detailaddress}',
+                                  style: TextStyle(fontSize: 13.0,color: Colors.black)),
+                              Text('상세설명: ${record.decription}'
+                              ,style: TextStyle(fontSize: 13.0, color: Colors.black))
+                            ],
                           )
                         ],
                       ),
