@@ -22,12 +22,15 @@ class AccentColorOverride extends StatelessWidget {
   }
 }
 
+
+
 class Grey extends StatefulWidget {
   @override
   _GreyState createState() => new  _GreyState();
 }
 
 class _GreyState extends State<Grey> {
+
   String home_location = '';
   int home_price = 0;
   final myController = TextEditingController();
@@ -41,6 +44,8 @@ class _GreyState extends State<Grey> {
   String _datevalue2 = '';
   bool _enabled = false;
   List<String> _values = new List<String>();
+
+
 
 
   Future _selectDate() async {
@@ -105,6 +110,8 @@ class _GreyState extends State<Grey> {
     });
   }
 
+
+  Key collapsedKey = PageStorageKey<String>('collapsed');
 
   Widget _buildGrid(BuildContext context) {
 
@@ -217,6 +224,10 @@ class _GreyState extends State<Grey> {
   }
 
   Widget _buildGridListItem(BuildContext context, DocumentSnapshot data) {
+
+
+
+
     final record = Record1.fromSnapshot(data);
     return  new GestureDetector(
       onTap: () {
@@ -264,9 +275,7 @@ class _GreyState extends State<Grey> {
                         style: TextStyle(fontSize: 13.5, color: color[500])),
                   ],
                 ),
-              )
-
-
+              ),
 
 
               //   ),
@@ -325,6 +334,7 @@ class _GreyState extends State<Grey> {
                 Container(
                   child:
                   ExpansionTile(
+
                     title: Row(
                       children: <Widget>[
                         DropdownButton(
@@ -367,7 +377,7 @@ class _GreyState extends State<Grey> {
 
                     //   backgroundColor: Colors.yellow,
 
-                    trailing: Icon(Icons.search),
+                    trailing:   Icon(Icons.search) ,
 
                     children: <Widget>[
 
@@ -578,9 +588,10 @@ class _GreyState extends State<Grey> {
                         ],
                       ),
 
+/*
                       InkWell(
                         splashColor: Colors.deepPurpleAccent[100],
-                        highlightColor: Colors.yellow,
+                    //    highlightColor: Colors.yellow,
                         child: Container(
                           width: MediaQuery.of(context).size.width/2,
                           padding: EdgeInsets.all(20.0),
@@ -595,25 +606,17 @@ class _GreyState extends State<Grey> {
                                   color: pur2,
                                   borderRadius: new BorderRadius.circular(20.0)
                               ),
-                              child: Text('Search',style: new TextStyle(color: Colors.white, fontSize: 22.0),)
+                              child: Text('Search',
+                                style: new TextStyle(color: Colors.white, fontSize: 22.0),)
                           ),
                         ),
                         onTap: (){
-                          print('장소 :' + myController.text);
-                          print('성인 : $_adult_peo');
-                          print('아동 : $_child_peo');
-                          print('check in : $_datevalue1');
-                          print('check out : $_datevalue2');
-                          print('check out : $slider_price');
-                          print('home_location     :' + home_location);
-                          print('home_price     : $home_price');
-
 
 
                         },
 
                       ),
-
+*/
                     ],
 
                   ),

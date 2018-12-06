@@ -12,7 +12,7 @@ bool selected = false;
 int houseIndex;
 var temp;
 
-List<String> favoriteIndex = [];
+List favoriteList = [];
 List<FavoriteItem> removeItem = [];
 List<FavoriteItem> favoriteItems2 = [];
 
@@ -41,7 +41,7 @@ class FavoriteListState extends State<FavoriteList> {
 
   Future<bool> _getFavorite() async{
     print('getFavorite');
-    favoriteIndex.clear();
+    favoriteList.clear();
     favoriteItems2.clear();
 
     var value;
@@ -53,13 +53,11 @@ class FavoriteListState extends State<FavoriteList> {
     });
 
 
-    value.split('/');
-    print('size: ${value.length}');
-    for(int i = 0; i < value.length; i++) {
-      if (value[i] != '/') {
-        print('temp[$i]: ${value[i]}');
-        favoriteIndex.add(value[i]);
-      }
+    favoriteList = value.split('/');
+    favoriteList.removeAt(0);
+    print('size: ${favoriteList.length}');
+    for (var value1 in favoriteList) {
+      print('value:$value1');
     }
     return true;
 
@@ -74,7 +72,7 @@ class FavoriteListState extends State<FavoriteList> {
   Future<void> _loadFavoriteList() async{
     //favoriteItems2.clear();
 
-    for(String a in favoriteIndex) {
+    for(String a in favoriteList) {
       int index = int.parse(a);
       print('어 왜??');
       Firestore.instance.collection('HOUSE').document('$index').snapshots()
@@ -107,6 +105,7 @@ class FavoriteListState extends State<FavoriteList> {
   }
 
   void removeItem(FavoriteItem item){
+    dbstring = "";
     int length = favoriteItems2.length;
     int idx;
     if(length == 1)
@@ -119,15 +118,21 @@ class FavoriteListState extends State<FavoriteList> {
       if(favoriteItems2.contains(item)) {
         print('remove\n');
         favoriteItems2.remove(item);
-        favoriteIndex.removeAt(idx);
+        favoriteList.removeAt(idx);
 
-        favoriteIndex.forEach((n){
-          print('??');
-          print('n ${n.toString()}');
-          dbstring = dbstring + n.toString();
-        });
-        print('dbstring $dbstring');
-        Firestore.instance.document('USER/${user.uid}').setData({'favorite':'${dbstring}'});
+        //favoriteList에 아무것도 없을 때
+        if(length == 1)
+          dbstring = "";
+        else {
+          favoriteList.forEach((n) {
+            print('??');
+            print('n ${n.toString()}');
+            dbstring = dbstring + "/${n.toString()}";
+          });
+          print('dbstring $dbstring');
+          Firestore.instance.document('USER/${user.uid}').setData(
+              {'favorite': '$dbstring'});
+        }
       }
     });
   }

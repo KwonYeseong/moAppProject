@@ -155,7 +155,7 @@ class Record1 {
         detailaddress= map['detailaddress'],
         dong= map['dong'],
         endtime= map['endtime'],
-        freeparking= map['freeparking='],
+        freeparking= map['freeparking'],
         hashtag= map['hashtag'],
         houseID= map['houseID'],
         kitchen= map['kitchen'],

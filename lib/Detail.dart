@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'DB.dart';
 import 'userInfo.dart' as userInfo;
 import 'color.dart';
+import 'edit.dart';
 
 class DetailPage extends StatefulWidget {
   final Record1 record;
@@ -21,8 +22,8 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
   final tagColor = accpurple1;
   final shadowColor = accpurple1;
   List favoriteList = [];
-
   String favoriteString;
+  List<Column> facilities = [];
 
   _DetailPageState({@required this.record});
 
@@ -30,6 +31,7 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
   initState(){
     super.initState();
     initFavoriteList();
+    _buildFacilitesList();
   }
 
   Future<void> initFavoriteList() async{
@@ -60,6 +62,29 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
       ),
     );
   }
+
+  Column buildButtonColumn(IconData icon, String label) {
+    Color color = Colors.blueGrey;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: color,size: 35.0,),
+        Container(
+          margin: const EdgeInsets.only(top: 8.0),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 15.0,
+              fontWeight: FontWeight.w400,
+              color: color,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   _buildProductImagesWidgets() {
     TabController imagesController = TabController(length: 4, vsync: this);
     return Padding(
@@ -69,29 +94,26 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
         child: Center(
           child: DefaultTabController(
             length: 4,
-            child: Hero(
-              tag: record.houseID,
-              child: Stack(
-                children: <Widget>[
-                  TabBarView(
+            child: Stack(
+              children: <Widget>[
+                TabBarView(
+                  controller: imagesController,
+                  children: <Widget>[
+                    Image.network(record.photourl1),
+                    Image.network(record.photourl2),
+                    Image.network(record.photourl3),
+                    Image.network(record.photourl4),
+                  ],
+                ),
+                Container(
+                  alignment: FractionalOffset(0.5, 0.95),
+                  child: TabPageSelector(
                     controller: imagesController,
-                    children: <Widget>[
-                      Image.network(record.photourl1),
-                      Image.network(record.photourl2),
-                      Image.network(record.photourl3),
-                      Image.network(record.photourl4),
-                    ],
+                    selectedColor: Colors.grey,
+                    color: Colors.white,
                   ),
-                  Container(
-                    alignment: FractionalOffset(0.5, 0.95),
-                    child: TabPageSelector(
-                      controller: imagesController,
-                      selectedColor: Colors.grey,
-                      color: Colors.white,
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           ),
         ),
@@ -99,31 +121,21 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
     );
   }
 
+  _buildFacilitesList() {
+    if(record.wifi == true) {facilities.add(buildButtonColumn(Icons.wifi, 'WIFI'));}
+    if(record.tv == true) {facilities.add(buildButtonColumn(Icons.tv, 'TV'));}
+    if(record.kitchen == true) {facilities.add(buildButtonColumn(Icons.kitchen, '부엌'));}
+    if(record.microwave == true) {facilities.add(buildButtonColumn(Icons.picture_in_picture, '전자레인지'));}
+    if(record.airconditioner == true) {facilities.add(buildButtonColumn(Icons.ac_unit, '에어컨'));}
+    if(record.freeparking == true) {facilities.add(buildButtonColumn(Icons.directions_car, '주차'));}
+
+    print(facilities);
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    @override
-    Column buildButtonColumn(IconData icon, String label) {
-      Color color = Colors.blueGrey;
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: color,size: 35.0,),
-          Container(
-            margin: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              label,
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w400,
-                color: color,
-              ),
-            ),
-          ),
-        ],
-      );
-    }
-
+    print(record.freeparking);
     return new Scaffold(
       body: SafeArea(
         child: new Container(
@@ -157,96 +169,84 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                                 Navigator.pop(context);
                               }
                           ),
-                          SizedBox(height: 50.0)
+                          SizedBox(height: 100.0)
                         ],
                       ),
-                      /*
-                      IconButton(
-                          icon: Icon(favoriteList.contains(record.houseID.toString())? Icons.favorite : Icons.favorite_border, color: Colors.red),
-                          onPressed: (){
-                            print('sss');
-                            setState(() {
-                              if (favoriteList.contains(record.houseID.toString())) {
-                                String temp = "0";
-                                int idx;
-                                idx = favoriteList.indexOf(record.houseID.toString());
-                                favoriteList.removeAt(idx);
-                                print('remove ${record.houseID} and ' + favoriteList.toString());
-                                favoriteList.forEach((t){
-                                  if(t == '0') { }
-                                  else {temp = temp + '/$t';}
-                                });
-                                Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':temp});
-                                initFavoriteList();
-                              } else { // 리스트에 추가
-                                Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':favoriteString + '/${record.houseID}'});
-                                initFavoriteList();
-                              }
-                            });
-                          }
-                      )*/
+
                       Column(
                         children: <Widget>[
                           IconButton(
                               icon: Icon(favoriteList.contains(record.houseID.toString())? Icons.favorite : Icons.favorite_border,
                                 color: Colors.red,),
+
                               onPressed: (){
                                 print('sss');
                                 setState(() {
                                   //TODO
                                   int length = favoriteList.length;
+                                  favoriteList.removeAt(0);
+
                                   int idx;
                                   if(length == 1)
                                     idx = 0;
                                   else
                                     idx = favoriteList.indexOf(record.houseID.toString());
+
                                   //리스트에서 삭제
                                   if (favoriteList.contains(record.houseID.toString())) {
                                     var ss = "";
 
                                     print('idx $idx');
                                     favoriteList.removeAt(idx);
+
                                     print('remove ${record.houseID} and ' + favoriteList.toString() + 'length: ${favoriteList.length}');
 
 
-                                    if(length == 1) {
+                                    if(length == 1)
+                                      ss = "";
+                                    else {
                                       favoriteList.forEach((t) {
-                                        ss = ss + "${t}";
-                                        print('ss:${ss}');
+                                        print('the number t: $t');
+                                        ss = ss + "/${t}";
                                       });
                                     }
-                                    else{
-                                      favoriteList.forEach((t) {
-                                        ss = ss + "${t}";
-                                        print('ss:${ss}');
-                                      });
-                                    }
+                                    print('ss:${ss}');
 
                                     Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':'$ss'});
                                     initFavoriteList();
+
                                   } else { // 리스트에 추가
-                                    if(length == 0)
-                                      Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':'${record.houseID}'});
-                                    else
-                                      Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':favoriteString + '/${record.houseID}'});
+                                    print('add /${record.houseID}');
+                                    Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':favoriteString + '/${record.houseID}'});
                                     initFavoriteList();
                                   }
                                 });
                               }
                           ),
 
-                          record.uid == userInfo.user.uid ? 
+                          record.uid == userInfo.user.uid ?
                           IconButton(
                               icon: Icon(Icons.delete),
                               onPressed: () {
                                 DocumentReference documentReference = Firestore.instance.document('HOUSE/${record.houseID}');
                                 documentReference.delete();
-
                                 FirebaseStorage.instance.ref().child('${record.houseID}-1.jpg').delete();
                                 FirebaseStorage.instance.ref().child('${record.houseID}-2.jpg').delete();
                                 FirebaseStorage.instance.ref().child('${record.houseID}-3.jpg').delete();
                                 FirebaseStorage.instance.ref().child('${record.houseID}-4.jpg').delete();
                                 Navigator.pop(context);
+                              })
+                              : SizedBox(height: 50.0),
+
+                          record.uid == userInfo.user.uid ?
+                          IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                  MaterialPageRoute(builder: (context) => Edit(record: record))
+                                );
+
                               })
                               : SizedBox(height: 50.0),
                         ],
@@ -270,7 +270,7 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                               padding: EdgeInsets.fromLTRB(15.0, 12.0, 0.0, 0.0),
                             ),
                             Container(
-                              padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),child: Text(record.hashtag, style: TextStyle(color:accpurple1))
+                                padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),child: Text(record.hashtag, style: TextStyle(color:accpurple1))
                             )
                           ],
                         ),
@@ -280,12 +280,13 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                         title: Text('${record.price}/day',style: TextStyle(color: Colors.grey),),
                         subtitle: Text('${record.starttime}~${record.endtime}' +' is available', style: TextStyle(color: accpurple1),),
                         trailing: RaisedButton(
-                          onPressed: displayDialog, //TODO 연락받을 번호 추가.
-                          color: purple5_1,
-                          child: Text('지금예약', style: TextStyle(color: Colors.white))),
+                            onPressed: displayDialog,
+                            color: purple5_1,
+                            child: Text('지금예약', style: TextStyle(color: Colors.white))),
                       ),
 
                       ExpansionTile(
+                        initiallyExpanded:true,
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -297,14 +298,7 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                             children: <Widget>[
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children:[
-                                  record.wifi == true ? buildButtonColumn(Icons.wifi, 'WIFI') : SizedBox(width: 0.0),
-                                  record.tv == true ? buildButtonColumn(Icons.tv, 'TV') : SizedBox(width: 0.0),
-                                  record.kitchen == true ? buildButtonColumn(Icons.kitchen, '부엌') : SizedBox(width: 0.0),
-                                  record.microwave == true ? buildButtonColumn(Icons.picture_in_picture, '전자레인지') : SizedBox(width: 0.0),
-                                  record.airconditioner == true ? buildButtonColumn(Icons.ac_unit, '에어컨') : SizedBox(width: 0.0),
-                                  record.freeparking == true ? buildButtonColumn(Icons.directions_car, '주차') : SizedBox(width: 0.0),
-                                ],
+                                children: facilities,
                               ),
                             ],
                           )
@@ -312,6 +306,7 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                       ),
 
                       ExpansionTile(
+                        initiallyExpanded:true,
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
