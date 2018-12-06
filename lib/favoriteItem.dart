@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'favorite.dart';
 import 'Detail.dart';
 import 'DB.dart';
+import 'color.dart';
 
 Color themecolor = Colors.redAccent;
 
@@ -138,14 +139,14 @@ class FavoriteItemState extends State<FavoriteItem>   with TickerProviderStateMi
                               RoomText(widget.roomtype),
                               style: new TextStyle(
                                   fontSize: 18.0,
-                                  color: themecolor,
+                                  color: accpurple1,
                                   fontWeight: FontWeight.w600),
                             ),
                             SizedBox(width: 10.0),
                             new Text(widget.dong,
                                 style: new TextStyle(
                                     fontSize: 18.0,
-                                    color: themecolor,
+                                    color: accpurple1,
                                     fontWeight: FontWeight.w600))
                           ],
                         ),

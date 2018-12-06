@@ -210,7 +210,7 @@ class HostingPageState extends State<HostingPage> {
                                 "호스팅 목록",
                                 style: new TextStyle(
                                     fontSize: 30.0,
-                                    color: Colors.black54,
+                                    color: purple5_1,
                                     fontWeight: FontWeight.bold),
                               ),
                             ),

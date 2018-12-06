@@ -6,6 +6,7 @@ import 'userInfo.dart';
 import 'package:collection/collection.dart';
 
 import 'favoriteItem.dart';
+import 'color.dart';
 bool editButtonFlag = false;
 bool selected = false;
 int houseIndex;
@@ -166,7 +167,7 @@ class FavoriteListState extends State<FavoriteList> {
                           "저장 목록",
                           style: new TextStyle(
                               fontSize: 30.0,
-                              color: Colors.black54,
+                              color: purple5_1,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -180,7 +181,7 @@ class FavoriteListState extends State<FavoriteList> {
                                 child: new Text(editText(),
                                     style: new TextStyle(
                                       fontSize: 20.0,
-                                      color: themecolor,
+                                      color: accpurple1,
                                       //fontWeight: FontWeight),)
                                     ))),
                           )
