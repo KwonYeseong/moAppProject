@@ -136,18 +136,25 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
     _roomType = record.roomtype;
     _peopleNum = record.peoplenum;
 
-    
-
     roomNameController = new TextEditingController(text: record.roomname);
     hashTagController = new TextEditingController(text: record.hashtag);
     descriptionController = new TextEditingController(text: record.decription);
-
+    roomName = record.roomname;
+    hashTag = record.hashtag;
+    description = record.decription;
 
     provinceController = new TextEditingController(text: record.province);
     cityController = new TextEditingController(text: record.city);
     dongController = new TextEditingController(text: record.dong);
     streetController = new TextEditingController(text: record.street);
     detailAddressController = new TextEditingController(text: record.detailaddress);
+
+    province = record.province;
+    city = record.city;
+    dong = record.dong;
+    street = record.street;
+    detailAddress = record.detailaddress;
+
 
     _rentType = record.renttype;
     /*
@@ -175,7 +182,7 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
     _endTime = '$_endYear-$_endMonth-$_endDate';
 
     priceController = new TextEditingController(text: record.price.toString());
-
+    price = record.price;
     wifi = record.wifi;
     tv = record.tv;
     kitchen = record.kitchen;

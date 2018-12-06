@@ -240,7 +240,7 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
 
                           record.uid == userInfo.user.uid ?
                           IconButton(
-                              icon: Icon(Icons.delete),
+                              icon: Icon(Icons.mode_edit),
                               onPressed: () {
                                 Navigator.push(
                                     context,
