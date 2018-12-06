@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'data.dart';
-import 'package:flutter_moapp_project/Detail.dart';
 import 'page_transformer.dart';
 import 'package:flutter_moapp_project/home.dart';
 import 'package:flutter_moapp_project/userInfo.dart' as userInfo;
+import '../color.dart';
 
 class IntroPageItem extends StatelessWidget {
   IntroPageItem({
@@ -70,7 +70,7 @@ class IntroPageItem extends StatelessWidget {
             ),
             onPressed: (){
               //  print(item.category);
-               userInfo.renttype = item.renttype;
+              userInfo.renttype = item.renttype;
 
               Navigator.push(
                   context,
@@ -119,8 +119,11 @@ class IntroPageItem extends StatelessWidget {
           begin: FractionalOffset.bottomCenter,
           end: FractionalOffset.topCenter,
           colors: [
-            const Color(0xFF000000),
-            const Color(0x00000000),
+            deeppur.withOpacity(0.4),
+            deeppur.withOpacity(0.2),
+            pur2.withOpacity(0.4),
+            pur1.withOpacity(0.3)
+
           ],
         ),
       ),

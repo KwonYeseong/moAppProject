@@ -7,7 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import 'userInfo.dart' as userInfo;
 import 'select.dart';
-
+import 'color.dart';
 Color themecolor = Colors.redAccent;
 
 final FirebaseAuth auth = FirebaseAuth.instance;
@@ -52,7 +52,9 @@ class LoginPageState extends State<LoginPage>{
         image: DecorationImage(
           colorFilter: new ColorFilter.mode(
               Colors.black.withOpacity(1.0), BlendMode.dstATop),
-          image: NetworkImage('https://firebasestorage.googleapis.com/v0/b/airbnb-c9e3e.appspot.com/o/NINEJIP1.jpg?alt=media&token=1c411ed2-1f29-4a1f-a88d-ccad2f4e3908'),
+          image:
+          NetworkImage('https://firebasestorage.googleapis.com/v0/b/airbnb-c9e3e.appspot.com/o/NINEJIP_PUR2.jpg?alt=media&token=dc89c51d-0180-4e85-8bf2-0753d48fca99'),
+          //NetworkImage('https://firebasestorage.googleapis.com/v0/b/airbnb-c9e3e.appspot.com/o/NINEJIP_PUR1.jpg?alt=media&token=26761697-1c72-4744-94d3-06dda6ef1565'),
           fit: BoxFit.cover,
         ),
       ),
@@ -70,7 +72,9 @@ class LoginPageState extends State<LoginPage>{
                   child: new FlatButton(
                     shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(30.0)),
-                    color: Colors.black.withOpacity(0.6),
+                    // color: accpurple1.withOpacity(0.6),
+                    color: Colors.white30.withOpacity(0.5),
+                    //Colors.deepPurple.withOpacity(0.5),
                     onPressed: () {
                       _signIn().then((FirebaseUser user) {
                         Navigator
@@ -97,7 +101,7 @@ class LoginPageState extends State<LoginPage>{
                               "LOGIN WITH GOOGLE",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: deeppur,
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold),
                             ),

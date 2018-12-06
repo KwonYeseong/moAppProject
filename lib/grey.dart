@@ -235,9 +235,12 @@ class _GreyState extends State<Grey> {
               Container(
                 height: 160.0,
                 width: 160.0,
-                child: Image.network(
-                  record.photourl1,
-                  fit: BoxFit.fill,
+                child: Hero(
+                  tag: record.houseID,
+                  child: Image.network(
+                    record.photourl1,
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
               //    Expanded(

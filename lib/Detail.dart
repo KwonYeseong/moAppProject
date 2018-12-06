@@ -69,26 +69,29 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
         child: Center(
           child: DefaultTabController(
             length: 4,
-            child: Stack(
-              children: <Widget>[
-                TabBarView(
-                  controller: imagesController,
-                  children: <Widget>[
-                    Image.network(record.photourl1),
-                    Image.network(record.photourl2),
-                    Image.network(record.photourl3),
-                    Image.network(record.photourl4),
-                  ],
-                ),
-                Container(
-                  alignment: FractionalOffset(0.5, 0.95),
-                  child: TabPageSelector(
+            child: Hero(
+              tag: record.houseID,
+              child: Stack(
+                children: <Widget>[
+                  TabBarView(
                     controller: imagesController,
-                    selectedColor: Colors.grey,
-                    color: Colors.white,
+                    children: <Widget>[
+                      Image.network(record.photourl1),
+                      Image.network(record.photourl2),
+                      Image.network(record.photourl3),
+                      Image.network(record.photourl4),
+                    ],
                   ),
-                )
-              ],
+                  Container(
+                    alignment: FractionalOffset(0.5, 0.95),
+                    child: TabPageSelector(
+                      controller: imagesController,
+                      selectedColor: Colors.grey,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

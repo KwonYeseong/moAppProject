@@ -69,14 +69,17 @@ class HostingPageState extends State<HostingPage> {
     final record = Record1.fromSnapshot(data);
 
     Widget _Image() {
-      return Container(
-          width: 470.0,
-          height: 200.0,
-          child: Image.network(
-            //"https://media.mnn.com/assets/images/2016/03/AIrbnb-Tokyo.jpg.653x0_q80_crop-smart.jpg",
-            record.photourl1,
-            fit: BoxFit.fill,
-          ));
+      return Hero(
+        tag: record.houseID,
+        child: Container(
+            width: 470.0,
+            height: 200.0,
+            child: Image.network(
+              //"https://media.mnn.com/assets/images/2016/03/AIrbnb-Tokyo.jpg.653x0_q80_crop-smart.jpg",
+              record.photourl1,
+              fit: BoxFit.fill,
+            )),
+      );
     }
     return  new GestureDetector(
         onTap: () {

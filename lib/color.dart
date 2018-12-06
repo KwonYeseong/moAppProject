@@ -10,14 +10,14 @@ Color purple1 = Color.fromRGBO(196, 144, 209, 1.0);
 Color purple2 = Color.fromRGBO(233, 210, 244, 1.0);
 
 Color purple4 = Color.fromRGBO(157, 120, 185, 1.0);
-Color purple3_1 = Color.fromRGBO(157, 120, 185, 0.2);
+Color purple4_1 = Color.fromRGBO(157, 120, 185, 0.8);
 Color purple5 = Color.fromRGBO(102, 44, 145, 1.0);
 Color purple5_1 = Color.fromRGBO(102, 44, 145, 0.7);
-
-
-
 Color accpurple = Color.fromRGBO(86, 3, 173, 1.0);
 Color accpurple1 = Color.fromRGBO(79, 3, 158, 1.0);
+
+
+Color deeppur = Color.fromRGBO(51, 2, 101, 1.0);
 
 Color pur1 = Color.fromRGBO(222, 194, 229, 1.0);
 Color pur2 = Color.fromRGBO(196, 144, 209, 1.0);

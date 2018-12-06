@@ -61,26 +61,29 @@ class FavoriteItemState extends State<FavoriteItem>   with TickerProviderStateMi
       child:Center(
         child: DefaultTabController(
           length: 4,
-          child: Stack(
-            children: <Widget>[
-              TabBarView(
-                controller: imagesController,
-                children: <Widget>[
-                  Image.network(widget.photoURL1, fit:BoxFit.fill),
-                  Image.network(widget.photoURL2, fit:BoxFit.fill),
-                  Image.network(widget.photoURL3, fit:BoxFit.fill),
-                  Image.network(widget.photoURL4, fit:BoxFit.fill),
-                ],
-              ),
-              Container(
-                alignment: FractionalOffset(0.5, 0.95),
-                child: TabPageSelector(
+          child: Hero(
+            tag: record.houseID,
+            child: Stack(
+              children: <Widget>[
+                TabBarView(
                   controller: imagesController,
-                  selectedColor: Colors.grey,
-                  color: Colors.white,
+                  children: <Widget>[
+                    Image.network(widget.photoURL1, fit:BoxFit.fill),
+                    Image.network(widget.photoURL2, fit:BoxFit.fill),
+                    Image.network(widget.photoURL3, fit:BoxFit.fill),
+                    Image.network(widget.photoURL4, fit:BoxFit.fill),
+                  ],
                 ),
-              )
-            ],
+                Container(
+                  alignment: FractionalOffset(0.5, 0.95),
+                  child: TabPageSelector(
+                    controller: imagesController,
+                    selectedColor: Colors.grey,
+                    color: Colors.white,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
