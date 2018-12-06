@@ -62,7 +62,7 @@ class FavoriteItemState extends State<FavoriteItem>   with TickerProviderStateMi
         child: DefaultTabController(
           length: 4,
           child: Hero(
-            tag: record.houseID,
+            tag:  widget.houseID,
             child: Stack(
               children: <Widget>[
                 TabBarView(
