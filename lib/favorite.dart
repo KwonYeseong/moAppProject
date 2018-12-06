@@ -101,7 +101,7 @@ class FavoriteListState extends State<FavoriteList> {
 
   String editText() {
     if (editButtonFlag == false)
-      return '편집';
+      return '삭제';
     else
       return '취소';
   }

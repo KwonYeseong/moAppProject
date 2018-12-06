@@ -252,7 +252,7 @@ class _GreyState extends State<Grey> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(record.hashtag,
-                        style: TextStyle(fontSize: 14.0, color: tagColor)),
+                        style: TextStyle(fontSize: 14.0, color: accpurple1)),
                     Text(record.roomname,
                         style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold)),
                     Text(record.starttime + " is available",

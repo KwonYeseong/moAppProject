@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'DB.dart';
 import 'userInfo.dart' as userInfo;
+import 'color.dart';
 
 class DetailPage extends StatefulWidget {
   final Record1 record;
@@ -17,8 +18,8 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
   final Record1 record;
-  final tagColor = Colors.redAccent;
-  final shadowColor = Colors.red[300];
+  final tagColor = accpurple1;
+  final shadowColor = accpurple1;
   List favoriteList = [];
 
   String favoriteString;
@@ -266,7 +267,7 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                               padding: EdgeInsets.fromLTRB(15.0, 12.0, 0.0, 0.0),
                             ),
                             Container(
-                              padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),child: Text(record.hashtag, style: TextStyle(color:shadowColor))
+                              padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),child: Text(record.hashtag, style: TextStyle(color:accpurple1))
                             )
                           ],
                         ),
@@ -274,10 +275,10 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
 
                       ListTile(
                         title: Text('${record.price}/day',style: TextStyle(color: Colors.grey),),
-                        subtitle: Text('${record.starttime}~${record.endtime}' +' is available', style: TextStyle(color: Colors.redAccent),),
+                        subtitle: Text('${record.starttime}~${record.endtime}' +' is available', style: TextStyle(color: accpurple1),),
                         trailing: RaisedButton(
                           onPressed: displayDialog, //TODO 연락받을 번호 추가.
-                          color: Colors.redAccent,
+                          color: purple5_1,
                           child: Text('지금예약', style: TextStyle(color: Colors.white))),
                       ),
 

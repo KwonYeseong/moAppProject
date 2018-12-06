@@ -8,6 +8,7 @@ import "ListItem.dart";
 import "favorite.dart";
 import "hosting.dart";
 import 'login.dart';
+import 'color.dart';
 
 class Mypage extends StatefulWidget {
   @override
@@ -30,7 +31,7 @@ class MypageState extends State<Mypage> {
   }
 
   List<ListItem> items = [
-    new ListItem(title: "Logout", icon: Icons.input),
+    new ListItem(title: "Logout", icon: Icons.input, ),
     //new ListItem(title: "저장 목록", icon: Icons.favorite_border),
     new ListItem(title: "호스팅 페이지", icon: Icons.home),
   ];
@@ -129,7 +130,7 @@ class MypageState extends State<Mypage> {
                               item.title,
                               style: Theme.of(context).textTheme.headline,
                             ),
-                            trailing: Icon(item.icon),
+                            trailing: Icon(item.icon, color: purple4),
                             onTap:
                                 () =>
 
@@ -182,7 +183,7 @@ class MypageState extends State<Mypage> {
                               item.title,
                               style: Theme.of(context).textTheme.headline,
                             ),
-                            trailing: Icon(item.icon),
+                            trailing: Icon(item.icon, color: purple4),
                             onTap: () =>  Navigator
                                 .of(context)
                                 .push(MaterialPageRoute(
