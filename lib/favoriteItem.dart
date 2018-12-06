@@ -5,9 +5,6 @@ import 'Detail.dart';
 import 'DB.dart';
 import 'color.dart';
 
-Color themecolor = Colors.redAccent;
-
-
 class FavoriteItem extends StatefulWidget {
   int houseID;
   String roomname;
@@ -30,28 +27,21 @@ class FavoriteItemState extends State<FavoriteItem>   with TickerProviderStateMi
   FavoriteListState favoriteList = new FavoriteListState();
   Record1 record;
 
-
   void initState(){
     super.initState();
     _buildRecord();
   }
 
   Future<void> _buildRecord() async{
-    print('_buildRecord');
-    print('houseID: ${widget.houseID}');
-    List a = ['1','2'];
     await Firestore.instance.collection('HOUSE')
         .where("houseID", isEqualTo: widget.houseID)
         .snapshots()
         .listen((data){
-      data.documents.forEach((ddata){
-        print("foreach ${ddata.toString()}");
-        record = Record1.fromSnapshot(ddata);
+      data.documents.forEach((data){
+        record = Record1.fromSnapshot(data);
       });
-
     });
   }
-
 
   Widget _Image() {
     TabController imagesController = TabController(length: 4, vsync: this);
@@ -74,6 +64,7 @@ class FavoriteItemState extends State<FavoriteItem>   with TickerProviderStateMi
                     Image.network(widget.photoURL4, fit:BoxFit.fill),
                   ],
                 ),
+
                 Container(
                   alignment: FractionalOffset(0.5, 0.95),
                   child: TabPageSelector(
@@ -88,7 +79,6 @@ class FavoriteItemState extends State<FavoriteItem>   with TickerProviderStateMi
         ),
       ),
     );
-
   }
 
   String RoomText(int value) {
@@ -109,15 +99,9 @@ class FavoriteItemState extends State<FavoriteItem>   with TickerProviderStateMi
                 .of(context)
                 .push(MaterialPageRoute(
                 builder: (BuildContext context) => DetailPage(record: record)));
-          }
-          else{
-            setState(() {
-              //selected[widget.id] = !selected[widget.id];
-              print('click on edit??\n');
-              selected = !selected;
-            });
+          } else{
+            setState(() {selected = !selected;});
             widget.callback();
-            //favoriteList.hello(this.widget);
           }
         },
         child: Card(
@@ -138,39 +122,28 @@ class FavoriteItemState extends State<FavoriteItem>   with TickerProviderStateMi
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            new Text(
-                              RoomText(widget.roomtype),
-                              style: new TextStyle(
-                                  fontSize: 18.0,
-                                  color: accpurple1,
-                                  fontWeight: FontWeight.w600),
-                            ),
+                            new Text(RoomText(widget.roomtype), style: new TextStyle(fontSize: 18.0, color: accpurple1, fontWeight: FontWeight.w600),),
+
                             SizedBox(width: 10.0),
-                            new Text(widget.dong,
-                                style: new TextStyle(
-                                    fontSize: 18.0,
-                                    color: accpurple1,
-                                    fontWeight: FontWeight.w600))
+
+                            new Text(widget.dong, style: new TextStyle(fontSize: 18.0, color: accpurple1, fontWeight: FontWeight.w600))
                           ],
                         ),
+
                         SizedBox(height: 5.0),
-                        new Text(
-                          widget.roomname,
-                          style: new TextStyle(
-                              fontSize: 25.0,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
+
+                        new Text(widget.roomname, style: new TextStyle(fontSize: 25.0, color: Colors.black, fontWeight: FontWeight.bold),
+
                         ),
                         SizedBox(height: 5.0),
-                        new Text(
-                          widget.price.toString(),
-                          style: new TextStyle(fontSize: 20.0, color: Colors.black),
+                        new Text(widget.price.toString(), style: new TextStyle(fontSize: 20.0, color: Colors.black),
                         ),
                       ],
                     )
-                  ]),
-            ))
-
+                  ]
+              ),
+            )
+        )
     );
   }
 

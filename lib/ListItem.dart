@@ -29,13 +29,13 @@ class ListItemState extends State<ListItem> {
                       ),
                       new Icon(
                         widget.icon,
-                        //style: new TextStyle(fontSize: 12.0, color: Colors.grey),
                       ),
                     ],
                   ),
                   SizedBox(height:20.0),
                   Divider(height:4.0),
-                ])
+                ]
+            )
         )
     );
   }

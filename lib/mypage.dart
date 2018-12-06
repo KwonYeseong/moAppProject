@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 
 import 'userInfo.dart' as userInfo;
 import "ListItem.dart";
-import "favorite.dart";
 import "hosting.dart";
 import 'login.dart';
 import 'color.dart';
@@ -18,12 +17,10 @@ class Mypage extends StatefulWidget {
 class MypageState extends State<Mypage> {
   double _imageHeight = 400.0;
 
-
   Future<LoginPage>  _signOut()  async{
     await auth.signOut();
     return new LoginPage();
   }
-
 
   @override
   void initState() {
@@ -32,7 +29,6 @@ class MypageState extends State<Mypage> {
 
   List<ListItem> items = [
     new ListItem(title: "Logout", icon: Icons.input, ),
-    //new ListItem(title: "저장 목록", icon: Icons.favorite_border),
     new ListItem(title: "호스팅 페이지", icon: Icons.home),
   ];
 
@@ -111,7 +107,6 @@ class MypageState extends State<Mypage> {
     );
   }
 
-//TODO
   Widget _buildTasksList() {
     return new Expanded(
         child: Container(
@@ -131,72 +126,41 @@ class MypageState extends State<Mypage> {
                               style: Theme.of(context).textTheme.headline,
                             ),
                             trailing: Icon(item.icon, color: purple4),
-                            onTap:
-                                () =>
-
-                                _signOut().then((LoginPage loginPage) {
-
-                                  googleSignIn.disconnect();
-
-                                  Navigator
-                                      .of(context)
-                                      .push(MaterialPageRoute(
-                                      builder: (BuildContext context) => LoginPage()
-                                  ));
-                                })
-
+                            onTap: () => _signOut().then((LoginPage loginPage) {
+                              googleSignIn.disconnect();
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                  builder: (BuildContext context) => LoginPage()
+                              ));
+                            })
                         ),
                         SizedBox(height: 10.0),
                         Divider(height:5.0)
-                      ]));
+                      ])
+                  );
                 }
-                /*
                 else if(index == 1){
                   return Padding(
                       padding: const EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
                       child: Column(children: <Widget>[
                         ListTile(
-                            title: Text(
-                              item.title,
-                              style: Theme.of(context).textTheme.headline,
-                            ),
-                            trailing: Icon(item.icon),
-                            onTap: () =>
-                                Navigator
-                                    .of(context)
-                                    .push(MaterialPageRoute(
-                                    builder: (BuildContext context) => FavoriteList()
-                                ))
-
-
-                        ),
-                        SizedBox(height: 10.0),
-                        Divider(height:5.0)
-                      ]));
-                }*/
-                else if(index == 1){
-                  return Padding(
-                      padding: const EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
-                      child: Column(children: <Widget>[
-                        ListTile(
-                            title: Text(
-                              item.title,
-                              style: Theme.of(context).textTheme.headline,
-                            ),
+                            title: Text(item.title, style: Theme.of(context).textTheme.headline,),
                             trailing: Icon(item.icon, color: purple4),
-                            onTap: () =>  Navigator
-                                .of(context)
+                            onTap: () =>  Navigator.of(context)
                                 .push(MaterialPageRoute(
                                 builder: (BuildContext context) => HostingPage()
-                            ))
-
+                            )
+                            )
                         ),
                         SizedBox(height: 10.0),
                         Divider(height:5.0)
-                      ]));
+                      ])
+                  );
                 }
               },
-            )));
+            )
+        )
+    );
   }
 
   Widget _buildMyTasksHeader() {
@@ -205,15 +169,11 @@ class MypageState extends State<Mypage> {
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          new Text(
-            '${userInfo.user.displayName} Page',
-            style: new TextStyle(fontSize: 25.0, fontWeight: FontWeight.w500),
-          ),
+          new Text('${userInfo.user.displayName} Page', style: new TextStyle(fontSize: 25.0, fontWeight: FontWeight.w500)),
+
           SizedBox(height: 7.0),
-          new Text(
-            'Welcome To My Page',
-            style: new TextStyle(color: Colors.grey, fontSize: 15.0),
-          ),
+
+          new Text('Welcome To My Page', style: new TextStyle(color: Colors.grey, fontSize: 15.0),),
         ],
       ),
     );
@@ -222,7 +182,6 @@ class MypageState extends State<Mypage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: AppBar(title: Text("DeepPurple")),
         body: SafeArea(
             child: Row(children: <Widget>[
               Expanded(
@@ -234,7 +193,8 @@ class MypageState extends State<Mypage> {
                   ],
                 ),
               )
-              //_buildFab()
-            ])));
+            ])
+        )
+    );
   }
 }

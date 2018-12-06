@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'grey.dart';
+
+import 'search.dart';
 import 'mypage.dart';
 import 'favorite.dart';
 import 'color.dart';
+
 class HomePage extends StatefulWidget {
   HomePage():super();
 
@@ -39,11 +41,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             currentIndex: _currentIndex, // new
             items: [
               new BottomNavigationBarItem(
-
                 icon: new Icon(Icons.search),
                 backgroundColor: Colors.black,
                 title: Text('Search'),
-
               ),
               new BottomNavigationBarItem(
                 icon: new Icon(Icons.favorite, size: 25.0,),

@@ -138,7 +138,6 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
 
   void _startDatePicker() {
     final bool showTitleActions = false;
-    print("start date picker");
     DatePicker.showDatePicker(
       context,
       showTitleActions: _showTitleActions,
@@ -150,8 +149,6 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
       initialDate: _startDate,
       dateFormat: _format,
       onChanged: (year, month, date) {
-        debugPrint('onChanged date: $year-$month-$date');
-
         if (!showTitleActions) {
           _changeStartTime(year, month, date);
         }
@@ -175,8 +172,6 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
       initialDate: _endDate,
       dateFormat: _format,
       onChanged: (year, month, date) {
-        debugPrint('onChanged date: $year-$month-$date');
-
         if (!showTitleActions) {
           _changeEndTime(year, month, date);
         }
@@ -727,7 +722,6 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
 
 
   ExpansionTile _facility() {
-    double interval = 60.0;
     TextStyle directionStyle = new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold);
     TextStyle facilitiesStyle = new TextStyle(fontSize: 16.0);
 
@@ -900,7 +894,6 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
       ],
     );
   }
-
 
   @override
   Widget build(BuildContext context) {

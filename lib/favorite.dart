@@ -7,16 +7,16 @@ import 'package:collection/collection.dart';
 
 import 'favoriteItem.dart';
 import 'color.dart';
+
 bool editButtonFlag = false;
 bool selected = false;
-int houseIndex;
-var temp;
 
 List favoriteList = [];
 List<FavoriteItem> removeItem = [];
 List<FavoriteItem> favoriteItems2 = [];
 
-
+int houseIndex;
+var temp;
 
 class FavoriteList extends StatefulWidget {
   @override
@@ -38,46 +38,30 @@ class FavoriteListState extends State<FavoriteList> {
     });
   }
 
-
   Future<bool> _getFavorite() async{
-    print('getFavorite');
     favoriteList.clear();
     favoriteItems2.clear();
 
     var value;
     await Firestore.instance.collection('USER').document('${user.uid}').get()
         .then((events){
-      print('순서왜이래\n');
-      value =  events.data['favorite'].toString();
-      print('value: $value');
+      value = events.data['favorite'].toString();
     });
-
 
     favoriteList = value.split('/');
     favoriteList.removeAt(0);
-    print('size: ${favoriteList.length}');
-    for (var value1 in favoriteList) {
-      print('value:$value1');
-    }
     return true;
-
   }
 
   void addItem(FavoriteItem item) {
     favoriteItems2.add(item);
-    print('size of favoriteitem2: ${favoriteItems2.length}');
   }
 
-
   Future<void> _loadFavoriteList() async{
-    //favoriteItems2.clear();
-
     for(String a in favoriteList) {
       int index = int.parse(a);
-      print('어 왜??');
       Firestore.instance.collection('HOUSE').document('$index').snapshots()
           .listen((data) {
-        print('??');
         templist = new FavoriteItem(
           houseID: data['houseID'],
           roomname: data['roomname'],
@@ -96,7 +80,6 @@ class FavoriteListState extends State<FavoriteList> {
 
   }
 
-
   String editText() {
     if (editButtonFlag == false)
       return '삭제';
@@ -108,15 +91,15 @@ class FavoriteListState extends State<FavoriteList> {
     dbstring = "";
     int length = favoriteItems2.length;
     int idx;
+
     if(length == 1)
       idx = 0;
     else
       idx = favoriteItems2.indexOf(item);
-    print('idx:$idx');
+
     //리스트에서 삭제
     setState(() {
       if(favoriteItems2.contains(item)) {
-        print('remove\n');
         favoriteItems2.remove(item);
         favoriteList.removeAt(idx);
 
@@ -125,13 +108,9 @@ class FavoriteListState extends State<FavoriteList> {
           dbstring = "";
         else {
           favoriteList.forEach((n) {
-            print('??');
-            print('n ${n.toString()}');
             dbstring = dbstring + "/${n.toString()}";
           });
-          print('dbstring $dbstring');
-          Firestore.instance.document('USER/${user.uid}').setData(
-              {'favorite': '$dbstring'});
+          Firestore.instance.document('USER/${user.uid}').setData({'favorite': '$dbstring'});
         }
       }
     });
@@ -150,20 +129,17 @@ class FavoriteListState extends State<FavoriteList> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
           child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
                   padding:
                   const EdgeInsets.symmetric(horizontal: 4.0, vertical: 10.0),
                   child: new Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                     children: <Widget>[
                       Container(
                         width: MediaQuery.of(context).size.width /1.5,
@@ -183,24 +159,19 @@ class FavoriteListState extends State<FavoriteList> {
                             onTap: () => editButtonPress(),
                             child: Container(
                                 padding: EdgeInsets.all(10.0),
-                                child: new Text(editText(),
-                                    style: new TextStyle(
-                                      fontSize: 20.0,
-                                      color: accpurple1,
-                                      //fontWeight: FontWeight),)
-                                    ))),
+                                child: new Text(editText(), style: new TextStyle(fontSize: 20.0, color: accpurple1))
+                            ),
                           )
                       ),
-
-
                     ],
                   ),
                 ),
+
                 Divider(height: 2.0, indent: 2.0),
+
                 Expanded(
                     child: new ListView(
-                        children: favoriteItems2
-                            .map((item) => new FavoriteItem(
+                        children: favoriteItems2.map((item) => new FavoriteItem(
                           houseID: item.houseID,
                           roomname: item.roomname,
                           dong: item.dong,
@@ -210,16 +181,11 @@ class FavoriteListState extends State<FavoriteList> {
                           photoURL2: item.photoURL2,
                           photoURL3: item.photoURL3,
                           photoURL4: item.photoURL4,
-                          callback: () {
-                            print('callback\n');
-                            removeItem(item);
-                          },
-                        ))
-                            .toList())),
-              ])),
+                          callback: () {removeItem(item);},
+                        )).toList())),
+              ]
+          )
+      ),
     );
   }
-
-
-
 }

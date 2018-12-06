@@ -1,11 +1,8 @@
-import 'dart:io';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'userInfo.dart' as userInfo;
 import 'color.dart';
@@ -13,8 +10,8 @@ import 'DB.dart';
 
 class Edit extends StatefulWidget {
   final Record1 record;
-
   Edit({@required this.record});
+
   @override
   EditState createState() => EditState(record: record);
 }
@@ -28,16 +25,7 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
   //Format
   TextStyle titleStyle = new TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.black);
 
-  //ImagePicker
-  File _livingroomImage;
-  var _livingroomTemp;
-  File _bedroomImage_1;
-  var _bedroomTemp_1;
-  File _bedroomImage_2;
-  var _bedroomTemp_2;
-  File _bathroomImage;
-  var _bathroomTemp;
-
+  //Image
   String photoUrl1;
   String photoUrl2;
   String photoUrl3;
@@ -155,20 +143,7 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
     street = record.street;
     detailAddress = record.detailaddress;
 
-
     _rentType = record.renttype;
-    /*
-    _startTime = record.starttime;
-    _endTime = record.starttime;
-
-    _startYear = int.parse(_startTime.substring(0, 4));
-    _startMonth = int.parse(_startTime.substring(5, 7));
-    _startDate = int.parse(_startTime.substring(8, 10));
-
-    _endYear = int.parse(_endTime.substring(0, 4));
-    _endMonth = int.parse(_endTime.substring(5, 7));
-    _endDate = int.parse(_endTime.substring(8, 10));
-    */
 
     DateTime now = DateTime.now();
     _startYear = now.year;
@@ -212,8 +187,6 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
       initialDate: _startDate,
       dateFormat: _format,
       onChanged: (year, month, date) {
-        debugPrint('onChanged date: $year-$month-$date');
-
         if (!showTitleActions) {
           _changeStartTime(year, month, date);
         }
@@ -237,8 +210,6 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
       initialDate: _endDate,
       dateFormat: _format,
       onChanged: (year, month, date) {
-        debugPrint('onChanged date: $year-$month-$date');
-
         if (!showTitleActions) {
           _changeEndTime(year, month, date);
         }
@@ -267,43 +238,6 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
     });
   }
 
-  Future getLvingroomImage() async {
-    _livingroomTemp = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      _livingroomImage = _livingroomTemp;
-    });
-  }
-  Future getBedroom1Image() async {
-    _bedroomTemp_1 = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      _bedroomImage_1 = _bedroomTemp_1;
-    });
-  }
-  Future getBedroom2Image() async {
-    _bedroomTemp_2 = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      _bedroomImage_2 = _bedroomTemp_2;
-    });
-  }
-  Future getBathroomImage() async {
-    _bathroomTemp = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      _bathroomImage= _bathroomTemp;
-    });
-  }
-/*
-  Future<void> getIndex() async{
-    CollectionReference ref = Firestore.instance.collection('INDEX');
-    QuerySnapshot events = await ref.getDocuments();
-    events.documents.forEach((document){
-      houseIndex = document['index'];
-    });
-  }
-*/
   //add image to firestore
   Future<void> addData2firestore() async{
         addData2Firebase({
@@ -339,36 +273,7 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
   }
   //add data to firebase
   Future<void> addData2Firebase(data){
-    Firestore.instance.document('HOUSE/$houseIndex').setData({
-      'houseID':houseIndex,
-      'uid':userInfo.user.uid,
-      'roomtype':_roomType,
-      'peoplenum':_peopleNum,
-      'roomname':roomName,
-      'hashtag':hashTag,
-      'decription':description,
-      'province':province,
-      'city':city,
-      'dong':dong,
-      'street':street,
-      'detailaddress':detailAddress,
-      'renttype':_rentType,
-      'starttime':_startTime,
-      'endtime':_endTime,
-      'price':price,
-      'wifi':wifi,
-      'tv':tv,
-      'kitchen':kitchen,
-      'microwave':microWave,
-      'airconditioner':airConditioner,
-      'freeparking':freeParking,
-      'photourl1':photoUrl1,
-      'photourl2':photoUrl2,
-      'photourl3':photoUrl3,
-      'photourl4':photoUrl4,
-      'phonenumber':phoneNumber
-    });
-    Firestore.instance.document('INDEX/Index').setData({'index':(houseIndex+1)});
+    Firestore.instance.document('HOUSE/$houseIndex').setData(data);
   }
 
   _previewImage() {
@@ -410,7 +315,6 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
     );
   }
 
-
   ExpansionTile _roomInfo(){
     double interval = 18.0;
     TextStyle directionStyle = new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold);
@@ -427,10 +331,8 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
               Text("방 종류", style: directionStyle),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-
                     width: MediaQuery.of(context).size.width/5,
                     child: Row(
                       children: <Widget>[
@@ -450,7 +352,6 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
                     ),
                   ),
 
-
                   Container(
                     width: MediaQuery.of(context).size.width/5,
                     child: Row(
@@ -461,7 +362,6 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
                     ),
                   ),
 
-
                   Container(
                     width: MediaQuery.of(context).size.width/5,
                     child: Row(
@@ -471,7 +371,6 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-
                 ],
               ),
 
@@ -479,14 +378,12 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
 
               Text("숙박 인원", style: directionStyle),
               Container(
-                //width: MediaQuery.of(context).size.width/1.6,
                 child: Row(
                   children: <Widget>[
                     Icon(Icons.person),
                     IconButton(icon: new Icon(Icons.remove), onPressed: _minusPeople),
                     Text('$_peopleNum',  style: new TextStyle(fontSize: 20.0)),
                     IconButton(icon: Icon(Icons.add), onPressed: _plusPeople),
-
                   ],
                 ),
               ),
@@ -496,9 +393,6 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
       ],
     );
   }
-
-
-
 
   ExpansionTile _title(){
     double interval = 25.0;
@@ -551,6 +445,7 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
                   setState(() {});
                 },
               ),
+
               SizedBox(height: interval)
             ],
           ),
@@ -648,6 +543,7 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
                   });
                 },
               ),
+
               SizedBox(height: interval)
             ],
           ),
@@ -733,6 +629,7 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
                   ),
                 ),
               ),
+
               SizedBox(height: interval)
             ],
           ),
@@ -762,6 +659,7 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
                   setState(() {});
                 },
               ),
+
               SizedBox(height: interval)
             ],
           ),
@@ -781,18 +679,17 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
                   setState(() {});
                 },
               ),
+
               SizedBox(height: interval)
             ],
           ),
         ),
-
       ],
     );
   }
 
 
   ExpansionTile _facility() {
-    double interval = 60.0;
     TextStyle directionStyle = new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold);
     TextStyle facilitiesStyle = new TextStyle(fontSize: 16.0);
 
@@ -820,6 +717,7 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
                           width: MediaQuery.of(context).size.width/5,
                           child:   Text("무선 인터넷", style: facilitiesStyle),
                         ),
+
                         Container(
                           width: MediaQuery.of(context).size.width/11,
                           child:   Checkbox(
@@ -842,6 +740,7 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
                           width: MediaQuery.of(context).size.width/5,
                           child:  Text("TV", style: facilitiesStyle),
                         ),
+
                         Container(
                           width: MediaQuery.of(context).size.width/11,
                           child:     Checkbox(
@@ -869,6 +768,7 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
                           width: MediaQuery.of(context).size.width/5,
                           child:   Text("부엌", style: facilitiesStyle),
                         ),
+
                         Container(
                           width: MediaQuery.of(context).size.width/11,
                           child:  Checkbox(
@@ -891,6 +791,7 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
                           width: MediaQuery.of(context).size.width/5,
                           child:  Text("전자레인지", style: facilitiesStyle),
                         ),
+
                         Container(
                           width: MediaQuery.of(context).size.width/11,
                           child: Checkbox(
@@ -907,7 +808,6 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
                   ),
                 ],
               ),
-
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -959,6 +859,7 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
                   ),
                 ],
               ),
+
               Divider(height: 5.0, color: Colors.black),
             ],
           ),
@@ -979,7 +880,6 @@ class EditState extends State<Edit> with TickerProviderStateMixin {
               Container( //빨간부분
                   height: 135.0,
                   width: MediaQuery.of(context).size.width,
-                  //color: Colors.redAccent,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[

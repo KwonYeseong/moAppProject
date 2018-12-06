@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,21 +7,17 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'userInfo.dart' as userInfo;
 import 'select.dart';
 import 'color.dart';
-Color themecolor = Colors.redAccent;
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = new GoogleSignIn();
 
 class LoginPage extends StatefulWidget {
-
   static final String route = "login-page";
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return LoginPageState();
   }
-
 }
 
 class LoginPageState extends State<LoginPage>{
@@ -34,27 +29,16 @@ class LoginPageState extends State<LoginPage>{
         idToken: gSA.idToken,
         accessToken: gSA.accessToken);
 
-    print("user name: ${userInfo.user.displayName}");
-    print("user email: ${userInfo.user.email}");
-    print("user uid: ${userInfo.user.uid}");
-
     return userInfo.user;
-
   }
-
-
 
   Widget loginPage() {
     return new Container(
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
-        //color: themecolor,
         image: DecorationImage(
-          colorFilter: new ColorFilter.mode(
-              Colors.black.withOpacity(1.0), BlendMode.dstATop),
-          image:
-          NetworkImage('https://firebasestorage.googleapis.com/v0/b/airbnb-c9e3e.appspot.com/o/NINEJIP_PUR2.jpg?alt=media&token=dc89c51d-0180-4e85-8bf2-0753d48fca99'),
-          //NetworkImage('https://firebasestorage.googleapis.com/v0/b/airbnb-c9e3e.appspot.com/o/NINEJIP_PUR1.jpg?alt=media&token=26761697-1c72-4744-94d3-06dda6ef1565'),
+          colorFilter: new ColorFilter.mode(Colors.black.withOpacity(1.0), BlendMode.dstATop),
+          image: NetworkImage('https://firebasestorage.googleapis.com/v0/b/airbnb-c9e3e.appspot.com/o/NINEJIP_PUR2.jpg?alt=media&token=dc89c51d-0180-4e85-8bf2-0753d48fca99'),
           fit: BoxFit.cover,
         ),
       ),
@@ -67,14 +51,10 @@ class LoginPageState extends State<LoginPage>{
             alignment: Alignment.center,
             child: new Row(
               children: <Widget>[
-
                 new Expanded(
                   child: new FlatButton(
-                    shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0)),
-                    // color: accpurple1.withOpacity(0.6),
+                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                     color: Colors.white30.withOpacity(0.5),
-                    //Colors.deepPurple.withOpacity(0.5),
                     onPressed: () {
                       _signIn().then((FirebaseUser user) {
                         Navigator
@@ -82,8 +62,7 @@ class LoginPageState extends State<LoginPage>{
                             .push(MaterialPageRoute(
                             builder: (BuildContext context) => Select()
 
-                        ))
-                            .catchError((e) => print(e));
+                        )).catchError((e) => print(e));
                       }
                       );
                     },
@@ -97,13 +76,7 @@ class LoginPageState extends State<LoginPage>{
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           new Expanded(
-                            child: Text(
-                              "LOGIN WITH GOOGLE",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: deeppur,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold),
+                            child: Text("LOGIN WITH GOOGLE", textAlign: TextAlign.center, style: TextStyle(color: deeppur, fontSize: 22, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ],
@@ -130,6 +103,4 @@ class LoginPageState extends State<LoginPage>{
           scrollDirection: Axis.horizontal,
         ));
   }
-
-
 }

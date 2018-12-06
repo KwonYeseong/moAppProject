@@ -89,31 +89,34 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
     TabController imagesController = TabController(length: 4, vsync: this);
     return Padding(
       padding: const EdgeInsets.all(0.0),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        child: Center(
-          child: DefaultTabController(
-            length: 4,
-            child: Stack(
-              children: <Widget>[
-                TabBarView(
-                  controller: imagesController,
-                  children: <Widget>[
-                    Image.network(record.photourl1),
-                    Image.network(record.photourl2),
-                    Image.network(record.photourl3),
-                    Image.network(record.photourl4),
-                  ],
-                ),
-                Container(
-                  alignment: FractionalOffset(0.5, 0.95),
-                  child: TabPageSelector(
+      child: Hero(
+        tag: record.houseID,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: Center(
+            child: DefaultTabController(
+              length: 4,
+              child: Stack(
+                children: <Widget>[
+                  TabBarView(
                     controller: imagesController,
-                    selectedColor: Colors.grey,
-                    color: Colors.white,
+                    children: <Widget>[
+                      Image.network(record.photourl1),
+                      Image.network(record.photourl2),
+                      Image.network(record.photourl3),
+                      Image.network(record.photourl4),
+                    ],
                   ),
-                )
-              ],
+                  Container(
+                    alignment: FractionalOffset(0.5, 0.95),
+                    child: TabPageSelector(
+                      controller: imagesController,
+                      selectedColor: Colors.grey,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -128,14 +131,10 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
     if(record.microwave == true) {facilities.add(buildButtonColumn(Icons.picture_in_picture, '전자레인지'));}
     if(record.airconditioner == true) {facilities.add(buildButtonColumn(Icons.ac_unit, '에어컨'));}
     if(record.freeparking == true) {facilities.add(buildButtonColumn(Icons.directions_car, '주차'));}
-
-    print(facilities);
-
   }
 
   @override
   Widget build(BuildContext context) {
-    print(record.freeparking);
     return new Scaffold(
       body: SafeArea(
         child: new Container(
@@ -152,12 +151,9 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                       height: MediaQuery.of(context).size.height /3 ,
                       child: _buildProductImagesWidgets(),
                     ),
-                    onTap: (){print('abtab');},
-                    onDoubleTap: (){
-                      print('doubletap');
-                    },
+                    onTap: (){ },
+                    onDoubleTap: () { },
                   ),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -165,27 +161,20 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                         children: <Widget>[
                           IconButton(
                               icon: Icon(Icons.arrow_back),
-                              onPressed: (){
-                                Navigator.pop(context);
-                              }
+                              onPressed: (){ Navigator.pop(context); }
                           ),
                           SizedBox(height: 100.0)
                         ],
                       ),
-
                       Column(
                         children: <Widget>[
                           IconButton(
                               icon: Icon(favoriteList.contains(record.houseID.toString())? Icons.favorite : Icons.favorite_border,
                                 color: Colors.red,),
-
                               onPressed: (){
-                                print('sss');
                                 setState(() {
-                                  //TODO
                                   int length = favoriteList.length;
                                   favoriteList.removeAt(0);
-
                                   int idx;
                                   if(length == 1)
                                     idx = 0;
@@ -195,28 +184,18 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                                   //리스트에서 삭제
                                   if (favoriteList.contains(record.houseID.toString())) {
                                     var ss = "";
-
-                                    print('idx $idx');
                                     favoriteList.removeAt(idx);
-
-                                    print('remove ${record.houseID} and ' + favoriteList.toString() + 'length: ${favoriteList.length}');
-
 
                                     if(length == 1)
                                       ss = "";
                                     else {
-                                      favoriteList.forEach((t) {
-                                        print('the number t: $t');
-                                        ss = ss + "/${t}";
-                                      });
+                                      favoriteList.forEach((t) {ss = ss + "/${t}";});
                                     }
-                                    print('ss:${ss}');
 
                                     Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':'$ss'});
                                     initFavoriteList();
 
                                   } else { // 리스트에 추가
-                                    print('add /${record.houseID}');
                                     Firestore.instance.document('USER/${userInfo.user.uid}').setData({'favorite':favoriteString + '/${record.houseID}'});
                                     initFavoriteList();
                                   }
@@ -244,14 +223,11 @@ class _DetailPageState extends State<DetailPage>  with TickerProviderStateMixin{
                               onPressed: () {
                                 Navigator.push(
                                     context,
-                                  MaterialPageRoute(builder: (context) => Edit(record: record))
+                                    MaterialPageRoute(builder: (context) => Edit(record: record))
                                 );
-
-                              })
-                              : SizedBox(height: 50.0),
+                              }) : SizedBox(height: 50.0),
                         ],
                       ),
-
                     ],
                   )
                 ],

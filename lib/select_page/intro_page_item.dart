@@ -56,8 +56,7 @@ class IntroPageItem extends StatelessWidget {
       translationFactor: 200.0,
       child: Padding(
         padding: const EdgeInsets.only(top: 16.0),
-        child:
-        new OutlineButton(
+        child: new OutlineButton(
             child: new Text(
               item.category,
               style: textTheme.caption.copyWith(
@@ -69,7 +68,6 @@ class IntroPageItem extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             onPressed: (){
-              //  print(item.category);
               userInfo.renttype = item.renttype;
 
               Navigator.push(
@@ -78,13 +76,6 @@ class IntroPageItem extends StatelessWidget {
             },
             shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
         ),
-        /*
-        Text(
-          item.title,
-          style: textTheme.title
-              .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
-        ),*/
       ),
     );
 
