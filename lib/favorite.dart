@@ -5,7 +5,6 @@ import 'dart:async';
 import 'userInfo.dart';
 import 'package:collection/collection.dart';
 
-
 import 'favoriteItem.dart';
 bool editButtonFlag = false;
 bool selected = false;
@@ -121,7 +120,6 @@ class FavoriteListState extends State<FavoriteList> {
         favoriteItems2.remove(item);
         favoriteIndex.removeAt(idx);
 
-
         favoriteIndex.forEach((n){
           print('??');
           print('n ${n.toString()}');
@@ -197,6 +195,7 @@ class FavoriteListState extends State<FavoriteList> {
                     child: new ListView(
                         children: favoriteItems2
                             .map((item) => new FavoriteItem(
+                          houseID: item.houseID,
                           roomname: item.roomname,
                           dong: item.dong,
                           roomtype: item.roomtype,

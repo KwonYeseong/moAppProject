@@ -8,7 +8,6 @@ import "ListItem.dart";
 import "favorite.dart";
 import "hosting.dart";
 import 'login.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class Mypage extends StatefulWidget {
   @override
@@ -18,17 +17,12 @@ class Mypage extends StatefulWidget {
 class MypageState extends State<Mypage> {
   double _imageHeight = 400.0;
 
-  GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: <String>[
-      'email',
-      'https://www.googleapis.com/auth/contacts.readonly',
-    ],
-  );
 
   Future<LoginPage>  _signOut()  async{
-    _googleSignIn.disconnect();
+    await auth.signOut();
     return new LoginPage();
   }
+
 
   @override
   void initState() {
@@ -136,14 +130,20 @@ class MypageState extends State<Mypage> {
                               style: Theme.of(context).textTheme.headline,
                             ),
                             trailing: Icon(item.icon),
-                            onTap: () =>
+                            onTap:
+                                () =>
+
                                 _signOut().then((LoginPage loginPage) {
+
+                                  googleSignIn.disconnect();
+
                                   Navigator
                                       .of(context)
                                       .push(MaterialPageRoute(
                                       builder: (BuildContext context) => LoginPage()
                                   ));
                                 })
+
                         ),
                         SizedBox(height: 10.0),
                         Divider(height:5.0)

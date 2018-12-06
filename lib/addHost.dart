@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'userInfo.dart' as userInfo;
+import 'color.dart';
 
 class addHosting extends StatefulWidget {
   @override
@@ -958,7 +959,7 @@ class addHostingState extends State<addHosting> with TickerProviderStateMixin {
             addData2firestore();
             Navigator.pop(context);
           },
-          backgroundColor: Colors.redAccent,
+          backgroundColor: purple4,
         )
     );
   }

@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 
+
 import 'favorite.dart';
 import 'addHost.dart';
 import 'hostingItem.dart';
+
+import 'package:flutter_moapp_project/userInfo.dart' as userInfo;
+
+import 'Detail.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'DB.dart';
+import 'color.dart';
+import 'userInfo.dart';
+
 
 class HostingPage extends StatefulWidget {
   @override
@@ -21,6 +31,124 @@ List<HostingItem> hostingItems = [
 ];
 
 class HostingPageState extends State<HostingPage> {
+
+
+
+
+
+  Widget _buildGrid(BuildContext context) {
+
+
+    return
+      StreamBuilder<QuerySnapshot>(
+        stream:Firestore.instance.collection('HOUSE').
+        where('uid' ,isEqualTo: userInfo.user.uid ).snapshots(),
+        builder: (context, snapshot){
+          if(!snapshot.hasData) return LinearProgressIndicator();
+          return _buildGridList(context, snapshot.data.documents);
+        },
+      );
+
+
+
+  }
+
+  Widget _buildGridList(BuildContext context, List<DocumentSnapshot> snapshot) {
+    return
+      ListView(
+        children: snapshot.map((data) => _buildGridListItem(context, data))
+            .toList(),
+      );
+
+  }
+
+  Widget _buildGridListItem(BuildContext context, DocumentSnapshot data) {
+
+
+
+    final record = Record1.fromSnapshot(data);
+
+    Widget _Image() {
+      return Container(
+          width: 470.0,
+          height: 200.0,
+          child: Image.network(
+            //"https://media.mnn.com/assets/images/2016/03/AIrbnb-Tokyo.jpg.653x0_q80_crop-smart.jpg",
+            record.photourl1,
+            fit: BoxFit.fill,
+          ));
+    }
+    return  new GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => DetailPage(record: record,)));
+        },
+        child :  Card(
+          child:  Container(
+            padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 30.0),
+            decoration:
+            editButtonFlag ?
+            new BoxDecoration(color: Colors.grey[300])
+                : new BoxDecoration(),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _Image(),
+                  SizedBox(height: 15.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          /*       new Text(
+                          widget.type,
+                          style: new TextStyle(
+                              fontSize: 15.0,
+                              color: themecolor,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        */
+                          //  SizedBox(width: 0.0),
+                          new Text(record.dong,
+                              style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: accpurple1,
+                                  fontWeight: FontWeight.w600))
+
+                        ],
+                      ),
+                      SizedBox(height: 2.0),
+
+                      new Text(
+                        record.roomname,
+                        style: new TextStyle(
+                            fontSize: 25.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+
+                      SizedBox(height: 5.0),
+                      new Text(
+                        record.price.toString(),
+                        style: new TextStyle(fontSize: 20.0, color: Colors.black),
+                      ),
+                    ],
+                  ),
+
+
+                ]),
+          ),
+        )
+    );
+
+  }
+
+
+
+
+
+
   void editButtonPress() {
     setState(() {
       if (editButtonFlag == false) {
@@ -51,74 +179,162 @@ class HostingPageState extends State<HostingPage> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
-      body: SafeArea(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 4.0, vertical: 10.0),
-                  child: new Row(
-                    children: <Widget>[
-                      IconButton(
-                          icon: Icon(Icons.arrow_back,
-                              size: 32.0, color: Colors.grey),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            editButtonFlag = false;
-                          }
-                      ),
-                      new Expanded(
-                        child: new Padding(
-                          padding: const EdgeInsets.only(left: 90.0),
-                          child: new Text(
-                            "호스팅 목록",
-                            style: new TextStyle(
-                                fontSize: 30.0,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold),
+      body:
+      //_buildGrid(context)
+      SafeArea(
+          child: ListView(
+            children: <Widget>[
+              Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 4.0, vertical: 10.0),
+                      child: new Row(
+                        children: <Widget>[
+                          IconButton(
+                              icon: Icon(Icons.arrow_back,
+                                  size: 32.0, color: Colors.grey),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                editButtonFlag = false;
+                              }
                           ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () => editButtonPress(),
-                        child: Container(
-                            padding: EdgeInsets.all(10.0),
-                            child: new Text(editText(),
+                          new Expanded(
+                            child: new Padding(
+                              padding: const EdgeInsets.only(left: 90.0),
+                              child: new Text(
+                                "호스팅 목록",
                                 style: new TextStyle(
-                                  fontSize: 20.0,
-                                  color: themecolor,
-                                  //fontWeight: FontWeight),)
-                                ))),
-                      )
-                    ],
-                  ),
-                ),
-                Divider(height: 2.0, indent: 2.0),
-                Expanded(
-                    child: new ListView(
-                        children: hostingItems
-                            .map((item) => new HostingItem(
-                          name: item.name,
-                          location: item.location,
-                          type: item.type,
-                          cost: item.cost,
-                          url: item.url,
-                          callback: () {
-                            removeItem(item);
-                          },
-                        ))
-                            .toList()))
-              ])),
-      floatingActionButton: new FloatingActionButton(
-        child: new Icon(Icons.add),
-        onPressed: () =>  Navigator
-            .of(context)
-            .push(MaterialPageRoute(
-            builder: (BuildContext context) => addHosting())),
-        backgroundColor: themecolor,
+                                    fontSize: 30.0,
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ),
+                    Divider(height: 2.0, indent: 2.0),
+
+                  ]),
+              new Container(
+                height: 700.0,
+                child:_buildGrid(context),
+              ),
+            ],
+          )
+
       ),
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+        return new SafeArea(
+    child: new Scaffold(
+    //key: _scaffoldKey,
+    body:
+    // _buildGrid(context),
+    new ListView(
+
+    padding: EdgeInsets.all(10.0),
+    children: <Widget>[
+    Padding(
+    padding:
+    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 10.0),
+      child: new Row(
+          children: <Widget>[
+            IconButton(
+                icon: Icon(Icons.arrow_back,
+                    size: 32.0, color: Colors.grey),
+                onPressed: () {
+                  Navigator.pop(context);
+                  editButtonFlag = false;
+                }
+            ),
+            new Expanded(
+              child: new Padding(
+                padding: const EdgeInsets.only(left: 90.0),
+                child: new Text(
+                  "호스팅 목록",
+                  style: new TextStyle(
+                      fontSize: 30.0,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+
+    /*
+    Container(
+    child:
+
+    ),
+    */
+    new SizedBox(height: 20.0),
+    new SizedBox(height: 10.0),
+
+    new Container(
+    height: 700.0,
+    child:_buildGrid(context),
+    ),
+
+    //   _buildGrid(context),
+    //  Expanded(child: _buildGrid(context),),
+    ]
+    ),
+
+    )
+    ]
+    )
+
+    ),
+
+
+
+
+
+
+
+
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+      floatingActionButton: new FloatingActionButton(
+          child: new Icon(Icons.add),
+          onPressed: () =>  Navigator
+              .of(context)
+              .push(MaterialPageRoute(
+              builder: (BuildContext context) => addHosting())),
+          backgroundColor: purple4,
+        ),
+
+
     );
+
   }
 }

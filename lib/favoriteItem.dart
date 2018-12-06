@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'favorite.dart';
 import 'Detail.dart';
+import 'DB.dart';
 
 Color themecolor = Colors.redAccent;
+
 
 class FavoriteItem extends StatefulWidget {
   int houseID;
@@ -19,12 +22,35 @@ class FavoriteItem extends StatefulWidget {
   FavoriteItem({this.houseID, this.roomname, this.dong, this.roomtype, this.price,
     this.photoURL1,this.photoURL2,this.photoURL3,this.photoURL4 ,this.callback});
 
-  @override
   FavoriteItemState createState() => new FavoriteItemState();
 }
 
 class FavoriteItemState extends State<FavoriteItem>   with TickerProviderStateMixin{
   FavoriteListState favoriteList = new FavoriteListState();
+  Record1 record;
+
+
+  void initState(){
+    super.initState();
+    _buildRecord();
+  }
+
+  Future<void> _buildRecord() async{
+    print('_buildRecord');
+    print('houseID: ${widget.houseID}');
+    List a = ['1','2'];
+    await Firestore.instance.collection('HOUSE')
+        .where("houseID", isEqualTo: widget.houseID)
+        .snapshots()
+        .listen((data){
+      data.documents.forEach((ddata){
+        print("foreach ${ddata.toString()}");
+        record = Record1.fromSnapshot(ddata);
+      });
+
+    });
+  }
+
 
   Widget _Image() {
     TabController imagesController = TabController(length: 4, vsync: this);
@@ -78,7 +104,7 @@ class FavoriteItemState extends State<FavoriteItem>   with TickerProviderStateMi
             Navigator
                 .of(context)
                 .push(MaterialPageRoute(
-                builder: (BuildContext context) => DetailPage()));
+                builder: (BuildContext context) => DetailPage(record: record)));
           }
           else{
             setState(() {
