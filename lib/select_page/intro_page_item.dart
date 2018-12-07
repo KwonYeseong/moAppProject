@@ -56,24 +56,37 @@ class IntroPageItem extends StatelessWidget {
       translationFactor: 200.0,
       child: Padding(
         padding: const EdgeInsets.only(top: 16.0),
-        child: new OutlineButton(
-            child: new Text(
-              item.category,
+        child: Column(
+          children: <Widget>[
+            new OutlineButton(
+                child: new Text(
+                  item.category,
+                  style: textTheme.caption.copyWith(
+                    color: Colors.white70,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 3.0,
+                    fontSize: 18.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                onPressed: (){
+                  userInfo.renttype = item.renttype;
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => new HomePage()));
+                },
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
+            ),
+            Text(
+              item.description,
               style: textTheme.caption.copyWith(
                 color: Colors.white70,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 3.0,
                 fontSize: 18.0,
               ),
-              textAlign: TextAlign.center,
             ),
-            onPressed: (){
-              userInfo.renttype = item.renttype;
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => new HomePage()));
-            },
-            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
+          ],
         ),
       ),
     );
