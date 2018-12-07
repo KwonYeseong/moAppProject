@@ -69,7 +69,6 @@ class IntroPageItem extends StatelessWidget {
             ),
             onPressed: (){
               userInfo.renttype = item.renttype;
-
               Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => new HomePage()));
